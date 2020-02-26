@@ -10,3 +10,4 @@ The main objective of the platform is to collect relevant data regarding the spa
 * José Silva
 
 ## Deliverables
+[1ª Milestone](https://drive.google.com/drive/folders/1ui5JUDKvUQzvemhmkXPYmUQ11mHcvJb5?usp=sharing)
