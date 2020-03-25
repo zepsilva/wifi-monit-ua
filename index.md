@@ -11,3 +11,4 @@ The main objective of the platform is to collect relevant data regarding the spa
 
 ## Deliverables
 [1ª Milestone](https://drive.google.com/drive/folders/1ui5JUDKvUQzvemhmkXPYmUQ11mHcvJb5?usp=sharing)
+[2ª Milestone](https://drive.google.com/drive/folders/1YTNcLXoJ-0og5_xqW3ImnwR_Sfl7_zsJ?usp=sharing)
