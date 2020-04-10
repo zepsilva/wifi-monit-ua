@@ -1,0 +1,72 @@
+{
+    "Clients": [
+        {   
+            "connectionType": "?????",
+            "deviceType": "?????"
+        },
+        {   
+            "connectionType": "?????",
+            "deviceType": "?????"
+        },
+        {   
+            "connectionType": "?????",
+            "deviceType": "?????"
+        },
+        {   
+            "connectionType": "?????",
+            "deviceType": "?????"
+        }
+    ],
+    "AccessPoints": [
+        {
+            "macAddress": "?????",
+            "ipAddress": "?????",
+            "location": "?????",
+            "clientCount": "?????"
+        },
+        {
+            "macAddress": "?????",
+            "ipAddress": "?????",
+            "location": "?????",
+            "clientCount": "?????"
+        },
+        {
+            "macAddress": "?????",
+            "ipAddress": "?????",
+            "location": "?????",
+            "clientCount": "?????"
+        },
+        {
+            "macAddress": "?????",
+            "ipAddress": "?????",
+            "location": "?????",
+            "clientCount": "?????"
+        }
+    ],
+    "ClientSessions": [
+        {
+            "apMacAddress": "?????",
+            "macAddress": "?????",
+            "protocol": "?????",
+            "userName": "?????"
+        },
+        {
+            "apMacAddress": "?????",
+            "macAddress": "?????",
+            "protocol": "?????",
+            "userName": "?????"
+        },
+        {
+            "apMacAddress": "?????",
+            "macAddress": "?????",
+            "protocol": "?????",
+            "userName": "?????"
+        },
+        {
+            "apMacAddress": "1",
+            "macAddress": "2",
+            "protocol": "3",
+            "userName": "4"
+        }
+    ]
+}
