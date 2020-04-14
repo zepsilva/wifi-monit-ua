@@ -18,7 +18,22 @@ const IndexPage = () => {
                     <Grid item xs={0} sm={2} />
                     <Grid item xs={12} sm={8}>
                         <Map/>
-                        <Button> <Link to="/dep4"> DETI (teste) </Link> </Button> 
+                        <Button> 
+                            <Link to={{
+                                pathname:'/department',
+                                state:{
+                                    depNum: 4
+                                }
+                            }}> DETI (departamento 4) </Link> 
+                        </Button> 
+                        <Button> 
+                            <Link to={{
+                                pathname:'/department',
+                                state:{
+                                    depNum: 23
+                                }
+                            }}> CP (departamento 23) </Link> 
+                        </Button> 
                     </Grid>
                     <Grid item xs={0} sm={2} />
                     </Grid>
