@@ -19,7 +19,7 @@ export class DepartmentPage extends React.Component{
         return (
             <div>
                 <Header />
-                <DepartmentGeneric id={this.props.location.state.depNum} />
+                <DepartmentGeneric id={this.props.location.state} />
             </div>
         );
     }

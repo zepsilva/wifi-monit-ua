@@ -22,7 +22,8 @@ const IndexPage = () => {
                             <Link to={{
                                 pathname:'/department',
                                 state:{
-                                    depNum: 4
+                                    depNum: 4,
+                                    depName: "Departamento de Eletrónica, Telecomunicações e Informática"
                                 }
                             }}> DETI (departamento 4) </Link> 
                         </Button> 
@@ -30,7 +31,8 @@ const IndexPage = () => {
                             <Link to={{
                                 pathname:'/department',
                                 state:{
-                                    depNum: 23
+                                    depNum: 23,
+                                    depName: "Complexo Pedagógico"
                                 }
                             }}> CP (departamento 23) </Link> 
                         </Button> 
