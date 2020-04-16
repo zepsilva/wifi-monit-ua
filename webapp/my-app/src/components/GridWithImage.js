@@ -1,6 +1,5 @@
 import React from 'react';
 import { Grid } from "@material-ui/core";
-import ShowAPName from './ShowAPName';
 import ImageMapper from 'react-image-mapper';
 
 import '../pages/dep.css';

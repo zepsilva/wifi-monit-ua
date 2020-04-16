@@ -1,37 +1,45 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
+import React, { useState } from 'react';
+import ReactMapGL, {NavigationControl, Marker} from "react-map-gl";
+import { Button } from '@material-ui/core'
+import { Link } from "react-router-dom";
 
-const useStyles = makeStyles({
-  root: {
-    minWidth: 275,
-  },
-  bullet: {
-    display: 'inline-block',
-    margin: '0 2px',
-    transform: 'scale(0.8)',
-  },
-  title: {
-    fontSize: 14,
-  },
-  pos: {
-    marginBottom: 12,
-  },
-});
-
-export default function OutlinedCard() {
-  const classes = useStyles();
-  const bull = <span className={classes.bullet}>•</span>;
+export default function Map() {
+  const [viewport, setViewport] = useState({
+    latitude: 40.629620,
+    longitude: -8.657000,
+    zoom: 16,
+    width: "99vw",
+    height: "92vh",
+    bearing: 275
+  });
 
   return (
-    <Card className={classes.root} variant="outlined">
-      <CardContent>
+    <ReactMapGL
+      {...viewport}
+      mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
+      onViewportChange={viewport => {setViewport(viewport)}}
+    >
+      <div style={{position: 'absolute', right: 0}}>
+          <NavigationControl />
+      </div>
+      
+      <Marker
+        key={1}
+        latitude={40.633213}
+        longitude={-8.659457}
+      >
         
-      </CardContent>
-    </Card>
+        <Link to={{
+                    pathname:'/department',
+                    state:{
+                        depNum: 4
+                    }
+                  }}>
+          <Button variant="contained" color="primary" size="small">
+            DETI
+          </Button>
+        </Link>
+      </Marker>
+    </ReactMapGL>
   );
 }
