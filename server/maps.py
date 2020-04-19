@@ -1,4 +1,7 @@
 import requests
+import random
+import sys
+import MySQLdb
 
 class Building:
 
@@ -108,6 +111,49 @@ def test():
                     print("\t\t\t" + "x: " + str(ap.x) + " y: " + str(ap.y))
 
 
+def updateBD():
+    conn = MySQLdb.connect("localhost", "daniel", "131199", "db1")
+    c = conn.cursor()
+
+    builds = buildings()
+    for b in builds:
+        b.update()
+        print(b.id)
+        try:
+            c.execute("insert into Building values (%s)", b.id)
+        except:
+            print("ERROR")
+            sys.exit(1)
+        for block in b.blocks:
+            print("\t" + block.name)
+            try:
+                c.execute("insert into Block values (%s,%s)", (b.id, block.name))
+            except:
+                print("ERROR")
+                sys.exit(1)
+            for floor in block.floors:
+                print("\t\t" + floor.name)
+                try:
+                    c.execute("insert into Floor values (%s,%s,%s,%s)", (b.id,block.name, floor.name, floor.number))
+                except:
+                    print("ERROR")
+                    sys.exit(1)
+                for ap in floor.aps:
+                    print("\t\t\t" + "x: " + str(ap.x) + " y: " + str(ap.y))
+                    try:
+                        c.execute("insert into AP values (%s,%s,%s,%s,%s,%s)",(
+                              "02:00:00:%02x:%02x:%02x" % (random.randint(0, 255),
+                                 random.randint(0, 255),
+                                 random.randint(0, 255)),
+                              b.id,
+                              block.name,
+                              floor.name,
+                              ap.x,
+                              ap.y))
+                    except:
+                        print("ERROR")
+                        sys.exit(1)
+
 def all():
     buildings = []
 
@@ -128,4 +174,5 @@ def all():
     print("zzz")
 
 #all()
-test()
+#test()
+updateBD()
