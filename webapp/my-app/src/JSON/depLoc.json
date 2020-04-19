@@ -1,0 +1,15 @@
+{
+    "departments": 
+    [
+        {
+            "DEP_NUMBER": 4,
+            "DEP_NOME": "DETI",
+            "coordinates": [40.633102, -8.659670]
+        },
+        {
+            "DEP_NUMBER": 11,
+            "DEP_NOME": "DMAT",
+            "coordinates": [40.630344, -8.658218]
+        }
+    ]
+}
