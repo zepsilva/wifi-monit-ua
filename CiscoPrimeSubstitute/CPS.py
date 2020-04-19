@@ -82,7 +82,7 @@ def number_clients_ap_generator(self, time_now):
             accessPoint['clientCount'] += random.randint(0, 1)
             update_clients(self, accessPoint['macAddress'], accessPoint['clientCount'] - temp)
 
-    if time_now >= time.max and time_now < time(9, 0, 0, 0):
+    if time_now >= time.min and time_now < time(9, 0, 0, 0):
         for accessPoint in DATA['AccessPoints']:
             if accessPoint['clientCount'] < 1:
                 continue
@@ -108,19 +108,20 @@ def update_clients(self, apMacAddress, numClientsCreateOrRemove):
             DATA["ClientSessions"].append({"apMacAddress": apMacAddress, "macAddress": macAddDevice, "protocol": "UNDEFINED", "userName": "admin"})
 
     else:
+
         removed = 0
 
         for i in range(0, len(DATA['Clients'])):
-            if DATA['Clients'][i]['apMacAddress'] is apMacAddress and removed < numClientsCreateOrRemove:
-                DATA['Clients'].pop(i)
-                removed += 1
+            if DATA['Clients'][i + removed]['apMacAddress'] == apMacAddress and removed > numClientsCreateOrRemove:
+                DATA['Clients'].pop(i + removed)
+                removed -= 1
 
         removed = 0
 
         for i in range(0, len(DATA['ClientSessions'])):
-            if DATA['ClientSessions'][i]['apMacAddress'] is apMacAddress and removed < numClientsCreateOrRemove:
-                DATA['ClientSessions'].pop(i)
-                removed += 1
+            if DATA['ClientSessions'][i + removed]['apMacAddress'] == apMacAddress and removed > numClientsCreateOrRemove:
+                DATA['ClientSessions'].pop(i + removed)
+                removed -= 1
 
 
 # creating API methods
@@ -188,4 +189,4 @@ api.add_resource(ClientSessionsSearch, '/webacs/api/v1/data/ClientSessions/<sear
 
 
 if __name__ == '__main__':
-    app.run(debug=True) 
+    app.run() 
