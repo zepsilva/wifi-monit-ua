@@ -1,14 +1,34 @@
 import requests
 
-
 class Building:
-    def __init__(self, name, id, ed):
-        self.name = name
+
+    def __init__(self, id):
         self.id = id
-        self.ed = ed
+        self.blocks = []
+
+    def update(self):
+        bl = []
+        resp = requests.get("http://websig.ua.pt/arcgis/rest/services/" + self.id + "?f=pjson")
+        for service in resp.json()['services']:
+            if service['name'] not in bl and service['type'] == "FeatureServer":
+                bl.append(service['name'])
+        for b in bl:
+            i = b.index("/")
+            b = b[i+1:]
+            block = Block(b, self)
+            self.blocks.append(block)
+        for block in self.blocks:
+            block.update()
+
+class Block:
+    def __init__(self, name, build):
+        self.name = name
+        self.build = build
+        self.ed = build.id + "/" + name
         self.floors = []
 
     def update(self):
+        #print("http://services.web.ua.pt/arcgis/arcgis?op=pisos&ed="+self.ed)
         resp = requests.get("http://services.web.ua.pt/arcgis/arcgis?op=pisos&ed="+self.ed)
         #print(resp.json())
         for piso in resp.json()['pisos']:
@@ -27,22 +47,22 @@ class Building:
 
 class Floor:
 
-    def __init__(self, name, id, buil, number=-1):
+    def __init__(self, name, id, block, number=-1):
         self.name = name
         self.id = id
         self.number = number
-        self.buil = buil
+        self.block = block
         self.comunicationsID = -1
         self.aps = []
 
     def update_comunicationsID(self):
-        resp = requests.get("http://services.web.ua.pt/arcgis/arcgis?op=infraestruturas&ed="+self.buil.ed+"&p="+str(self.id))
+        resp = requests.get("http://services.web.ua.pt/arcgis/arcgis?op=infraestruturas&ed=" + self.block.ed + "&p=" + str(self.id))
         for inf in resp.json()['infraestruturas'][self.name]:
             if inf['Nome'] is not None and "Comunica" in inf['Nome'] :
                 self.comunicationsID = inf['ID']
 
     def update_aps(self):
-        resp = requests.get("http://services.web.ua.pt/arcgis/arcgis?op=elementos&ed="+self.buil.ed+"&p="+str(self.id)+"&i="+str(self.comunicationsID))
+        resp = requests.get("http://services.web.ua.pt/arcgis/arcgis?op=elementos&ed=" + self.block.ed + "&p=" + str(self.id) + "&i=" + str(self.comunicationsID))
         x = resp.json()["elementos"][self.name]
         y = x[list(x)[0]]
         for elem in y:
@@ -60,9 +80,35 @@ class AP:
 
 
 buildingsInfo = [("Matematica", 11, "ed11/matematica"),
-                 ("DETI", 4, "ed4/electronica")]
+                 ("DETI", 4, "ed4/electronica"),
+                 ("Reitoria", 25, "ed25/reitoria"),
+                 ("IEETA", 20, "ed20/ieeta"),
+                 ("Fisica", 13, "ed13/fisica"),
+                 ]
+
+def buildings():
+    buildings = []
+    resp = requests.get("http://websig.ua.pt/arcgis/rest/services/?f=pjson")
+    eds = resp.json()['folders'];
+    for ed in eds:
+        build = Building(ed)
+        buildings.append(build)
+    return buildings
 
 def test():
+    builds = buildings()
+    for b in builds:
+        b.update()
+        print(b.id)
+        for block in b.blocks:
+            print("\t" + block.name)
+            for floor in block.floors:
+                print("\t\t" + floor.name)
+                for ap in floor.aps:
+                    print("\t\t\t" + "x: " + str(ap.x) + " y: " + str(ap.y))
+
+
+def all():
     buildings = []
 
     for b in buildingsInfo:
@@ -81,4 +127,5 @@ def test():
 
     print("zzz")
 
+#all()
 test()
