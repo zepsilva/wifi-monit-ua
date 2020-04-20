@@ -249,7 +249,82 @@ export class DepartmentGeneric extends React.Component{
                     ]
                 };
                 break;
-            case 23:
+            case 11:
+                imagempiso1 = "./images/dep11_p1.png";
+                imagempiso2 = "./images/dep11_p2.png";
+                imagempiso3 = "./images/dep11_p3.png";
+                MAP1 = {
+                    name: "mapadmatpiso1",
+                    areas: [
+                        // APs
+                        {name: getClickAPText("area topleft"), shape: "circle", coords: [469,396,15], preFillColor: "rgba(0,0,250,1)"},
+                        {name: getClickAPText("area botleft"), shape: "circle", coords: [536,772,15], preFillColor: "rgba(0,0,250,1)"},
+                        {name: getClickAPText("area mid"), shape: "circle", coords: [867,776,15], preFillColor: "rgba(0,0,250,1)"},
+                        {name: getClickAPText("area botright"), shape: "circle", coords: [1224,776,15], preFillColor: "rgba(0,0,250,1)"},
+    
+
+                        // area topleft
+                        {name: "11.1.07 - 12", shape: "rect", coords: [211,286,570,490], preFillColor: getColorFromNumDevices( getNumDevicesOfAP("area topleft") )}, // topleft
+
+                        // area botleft
+                        {name: "bottomleft area", shape: "poly", coords: [211,571, 211,964, 686,964, 686,639, 570,639, 570,571], preFillColor: getColorFromNumDevices( getNumDevicesOfAP("area botleft") )}, // botleft
+
+                        // area mid
+                        {name: "11.1.25 - 30 salas", shape: "rect", coords: [690,602,1089,953], preFillColor: getColorFromNumDevices( getNumDevicesOfAP("area mid") )}, // mid
+
+                        // area botright
+                        {name: "11.1.31 - 39 salas", shape: "rect", coords: [1095,602,1358,953], preFillColor: getColorFromNumDevices( getNumDevicesOfAP("area botright") )}, // botright
+
+                    ]
+                };
+                MAP2 = {
+                    name: "mapadmatpiso2",
+                    areas: [
+                        // APs
+                        {name: getClickAPText("area topleft2"), shape: "circle", coords: [456,445,15], preFillColor: "rgba(0,0,250,1)"},
+                        {name: getClickAPText("area botleft2"), shape: "circle", coords: [551,813,15], preFillColor: "rgba(0,0,250,1)"},
+                        {name: getClickAPText("area mid2"), shape: "circle", coords: [857,776,15], preFillColor: "rgba(0,0,250,1)"},
+                        {name: getClickAPText("area botright2"), shape: "circle", coords: [1224,776,15], preFillColor: "rgba(0,0,250,1)"},
+    
+
+                        // area topleft
+                        {name: "11.2.8 - 16", shape: "rect", coords: [211,286,570,634], preFillColor: getColorFromNumDevices( getNumDevicesOfAP("area topleft2") )}, // topleft
+
+                        // area botleft
+                        {name: "11.2.1 - 7; 11.2.18 - 20", shape: "rect", coords: [211,637,687,958], preFillColor: getColorFromNumDevices( getNumDevicesOfAP("area botleft2") )}, // botleft
+
+                        // area mid
+                        {name: "11.2.21 - 28 salas", shape: "rect", coords: [690,639,1089,959], preFillColor: getColorFromNumDevices( getNumDevicesOfAP("area mid2") )}, // mid
+
+                        // area botright
+                        {name: "11.2.29 - 41 salas", shape: "rect", coords: [1096,634,1360,957], preFillColor: getColorFromNumDevices( getNumDevicesOfAP("area botright2") )}, // botright
+
+                    ]
+                };
+                MAP3 = {
+                    name: "mapadmatpiso3",
+                    areas: [
+                        // APs
+                        {name: getClickAPText("area topleft3"), shape: "circle", coords: [456,445,15], preFillColor: "rgba(0,0,250,1)"},
+                        {name: getClickAPText("area botleft3"), shape: "circle", coords: [464,852,15], preFillColor: "rgba(0,0,250,1)"},
+                        {name: getClickAPText("area mid3"), shape: "circle", coords: [831,751,15], preFillColor: "rgba(0,0,250,1)"},
+                        {name: getClickAPText("area botright3"), shape: "circle", coords: [1188,750,15], preFillColor: "rgba(0,0,250,1)"},
+    
+
+                        // area topleft
+                        {name: "11.3.12 - 23", shape: "rect", coords: [207,275,590,665], preFillColor: getColorFromNumDevices( getNumDevicesOfAP("area topleft3") )}, // topleft
+
+                        // area botleft
+                        {name: "11.3.1 - 11", shape: "rect", coords: [238,668,618,930], preFillColor: getColorFromNumDevices( getNumDevicesOfAP("area botleft2") )}, // botleft
+
+                        // area mid
+                        {name: "11.3.25 - 30; 11.3.42 - 50", shape: "rect", coords: [625,687,1024,930], preFillColor: getColorFromNumDevices( getNumDevicesOfAP("area mid2") )}, // mid
+
+                        // area botright
+                        {name: "11.3.31 - 41 salas", shape: "rect", coords: [1029,688,1369,929], preFillColor: getColorFromNumDevices( getNumDevicesOfAP("area botright2") )}, // botright
+
+                    ]
+                };
                 break;
             default:
 
