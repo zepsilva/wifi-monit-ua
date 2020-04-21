@@ -175,38 +175,20 @@ export class DepartmentGeneric extends React.Component{
                         {name: getClickAPText("anfiteatro"), shape: "circle", coords: [366,774,15], preFillColor: "rgba(0,0,250,1)"},
                         {name: getClickAPText("salas computadores"), shape: "circle", coords: [539,818,15], preFillColor: "rgba(0,0,250,1)"},
                         {name: getClickAPText("secretaria"), shape: "circle", coords: [912,804,15], preFillColor: "rgba(0,0,250,1)"},
-
-                        // salas mais perto do AP da sala de estudo
-                        {name: "4.1.18", shape: "rect", coords: [803,233,930,365], preFillColor: getColorFromNumDevices( getNumDevicesOfAP("salaEstudo") )}, // 4.1.18
-                        {name: "4.1.19", shape: "rect", coords: [801,94,1024,229], preFillColor: getColorFromNumDevices( getNumDevicesOfAP("salaEstudo") )}, // 4.1.19
-                        {name: "4.1.20", shape: "rect", coords: [1028,94,1160,229], preFillColor: getColorFromNumDevices( getNumDevicesOfAP("salaEstudo") )}, // 4.1.20
-
-                        // salas mais perto do AP makerlab
-                        {name: "4.1.23", shape: "rect", coords: [1164,94,1307,229], preFillColor: getColorFromNumDevices( getNumDevicesOfAP("makerLab") )}, //4.1.23
-                        {name: "4.1.26", shape: "rect", coords: [1311,94,1421,229], preFillColor: getColorFromNumDevices( getNumDevicesOfAP("makerLab") )}, // 4.1.26
-                        {name: "4.1.27", shape: "rect", coords: [1424,94,1477,229], preFillColor: getColorFromNumDevices( getNumDevicesOfAP("makerLab") )}, // 4.1.27
-                        {name: "4.1.24", shape: "rect", coords: [1260,285,1307,365], preFillColor: getColorFromNumDevices( getNumDevicesOfAP("makerLab") )}, // 4.1.24
-                        {name: "4.1.25", shape: "rect", coords: [1312,285,1368,365], preFillColor: getColorFromNumDevices( getNumDevicesOfAP("makerLab") )}, // 4.1.25
-
-                        // salas mais perto do AP sala dos nucleos
-                        {name: "4.1.28", shape: "rect", coords: [1481,94,1591,229], preFillColor: getColorFromNumDevices( getNumDevicesOfAP("sala dos nucleos") )}, // 4.1.28
-                        {name: "4.1.29", shape: "rect", coords: [1478,285,1523,365], preFillColor: getColorFromNumDevices( getNumDevicesOfAP("sala dos nucleos") )}, // 4.1.29
-                        {name: "4.1.30", shape: "rect", coords: [1528,285,1702,365], preFillColor: getColorFromNumDevices( getNumDevicesOfAP("sala dos nucleos") )}, // 4.1.30
-                        {name: "4.1.32", shape: "rect", coords: [1595,94,1702,229], preFillColor: getColorFromNumDevices( getNumDevicesOfAP("sala dos nucleos") )}, // 4.1.32
-
-                        // salas mais perto do AP anfiteatro
-                        {name: "4.1.01", shape: "rect", coords: [209,687,371,805], preFillColor: getColorFromNumDevices( getNumDevicesOfAP("anfiteatro") )}, // 4.1.01
-                        {name: "4.1.02", shape: "rect", coords: [209,823,428,958], preFillColor: getColorFromNumDevices( getNumDevicesOfAP("anfiteatro") )}, // 4.1.02
-
-                        // salas computadores
-                        {name: "4.1.04", shape: "rect", coords: [433,823,598,958], preFillColor: getColorFromNumDevices( getNumDevicesOfAP("salas computadores") )}, // 4.1.04
-                        {name: "4.1.06", shape: "rect", coords: [603,823,769,958], preFillColor: getColorFromNumDevices( getNumDevicesOfAP("salas computadores") )}, // 4.1.06
-
-                        // secretaria
-                        {name: "4.1.11 - .17", shape: "poly", coords: [914,688 , 914,806, 883,806, 883,916, 998,916, 998,958, 1104,958, 1104,688], preFillColor: getColorFromNumDevices( getNumDevicesOfAP("secretaria") )}, // 4.1.11-17
                         
-                        // aquario
-                        {name: "4.1.36", shape: "poly", coords: [998,293, 1133,293, 1133,364, 1099,364, 1099,484, 1050,484, 1050,470, 985,470, 984,369, 998,369], preFillColor: getColorFromNumDevices( getNumDevicesOfAP("salaEstudo") )}, // 4.1.36
+                        // areas
+                        {name: "4.1.04 - 9", shape: "rect", coords: [435,687,770,958], preFillColor: getColorFromNumDevices( getNumDevicesOfAP("salas computadores") )}, // 4.1.18
+
+                        {name: "4.1.01 - 3", shape: "rect", coords: [209,687,432,958], preFillColor: getColorFromNumDevices( getNumDevicesOfAP("anfiteatro") )}, // anfiteatro
+ 
+                        {name: "4.1.11 - 17", shape: "poly", coords: [993,559, 773,559, 773,958, 1105,957, 1105,688, 993,688], preFillColor: getColorFromNumDevices( getNumDevicesOfAP("secretaria") )}, // area de redes
+                    
+                        {name: "4.1.28 - 32", shape: "rect", coords: [1477,96,1702,366], preFillColor: getColorFromNumDevices( getNumDevicesOfAP("sala dos nucleos") )}, // nucleos
+                        
+                        {name: "4.1.23 - 27, 4.1.34", shape: "rect", coords: [1163,96,1476,366], preFillColor: getColorFromNumDevices( getNumDevicesOfAP("makerLab") )},
+
+                        {name: "4.1.18 - 20, 4.1.36", shape: "poly", coords: [804,364, 928,364, 928,492, 1105,492, 1105,372, 1159,372, 1159,96, 801,96], preFillColor: getColorFromNumDevices( getNumDevicesOfAP("salaEstudo") )}, // 4.1.18
+
                     ]
                 };
                 MAP2 = {
@@ -356,7 +338,14 @@ export class DepartmentGeneric extends React.Component{
         */
         return (
             <div>
-
+                <div className="centrado" > 
+                        <p> Legenda (num de devices conectados): </p>
+                        <div className="square" style={{backgroundColor : 'rgba(0,255,0,0.6)', right : '200px'}}> 0 a 10 </div>
+                        <div className="square" style={{backgroundColor : 'rgba(255,255,0,0.6)', right : '150px'}}> 11 a 20 </div>
+                        <div className="square" style={{backgroundColor : 'rgba(255,127,80,0.6)', right : '100px'}}> 21 a 40 </div>
+                        <div className="square" style={{backgroundColor : 'rgba(255,0,0,0.6)', right : '50px'}}> 41 a 55 </div>
+                        <div className="square" style={{backgroundColor : 'rgba(150,100,200,0.6)', right : '0px'}}> >55 </div>
+                </div>
                 <div className="slideshow-container">
 
                     <div className="mySlides fade">
