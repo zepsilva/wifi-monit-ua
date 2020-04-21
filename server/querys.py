@@ -33,7 +33,7 @@ def getInfoByAp(APmac, time=time.time()):
             closest = entry
             closestTime = abs(entryTime - time)
 
-    return closest
+    return closest[2]
 
 #print(getAPSbyFloor("ed1", "pav1", "Piso 1"))
 

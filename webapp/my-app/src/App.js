@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useState, useEffect } from 'react';
 import './App.css';
 
 import { 
@@ -18,7 +18,10 @@ import DepartmentPage from "./pages/department";
 
 class App extends Component {
   render() {
-    return <Router> 
+
+
+
+    return <Router>
       <Switch>
         <Route exact path="/" component={IndexPage} />
         <Route exact path="/myconnection" component={ConnectionPage}/>

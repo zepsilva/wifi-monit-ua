@@ -1,4 +1,4 @@
-#!/home/daniel/Data/Universidade/PEI/wifi-monit-ua/server/venv/bin/python
+#!/home/andralves/Documents/PEI/again/wifi-monit-ua/server/venv/bin/python
 # -*- coding: utf-8 -*-
 import re
 import sys

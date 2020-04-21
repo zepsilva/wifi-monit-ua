@@ -6,7 +6,32 @@ import { Slider, Typography } from '@material-ui/core';
 
 
 var slideIndex = 1;
- 
+var abc;
+var testdynamicvalues = 0
+var aps = [
+   {"mac":"286e13139c47","numDevices":0},
+   {"mac":"4088b2c69a01","numDevices":0},
+   {"mac":"811fe17e3578","numDevices":0},
+   {"mac":"94ed25975fca","numDevices":0},
+   {"mac":"c18302689d96","numDevices":0},
+   {"mac":"2dbd89cae8a0","numDevices":0},
+   {"mac":"c75d6733a5d5","numDevices":0},
+   {"mac":"f605e3a05ec3","numDevices":0},
+   {"mac":"76a369c7358b","numDevices":0},
+   {"mac":"a6aed4251b46","numDevices":0},
+   {"mac":"c26803b91441","numDevices":0},
+   {"mac":"c6959257b146","numDevices":0},
+   {"mac":"cfd7097acd66","numDevices":0},
+   {"mac":"f1a971b93458","numDevices":0}
+]
+
+for (var ap in aps){
+    fetch('/numDevicesAP?AP='+ap.mac).then(response => response.json())
+        .then(data => ap.numDevices=data.numDevices)
+    console.log()
+}
+console.log(aps)
+
 function showSlides(n) {
     var i;
     var slides = document.getElementsByClassName("mySlides");
@@ -35,10 +60,15 @@ function currentSlide(n) {
 
 // obtem numero de devices atraves do AP dado ( a substituir pela função da API )
 function getNumDevicesOfAP(AP) {
+    for (var ap in aps)
+        if(AP == ap.mac)
+            return ap.numDevices
+    return 0
+    /*
     var numDevices = 0;
     // deti piso 1
     if (AP == "salaEstudo"){
-        numDevices = 20;
+        numDevices = testdynamicvalues;
     } else if (AP == "makerLab"){
         numDevices = 60;
     } else if (AP == "anfiteatro"){
@@ -47,36 +77,36 @@ function getNumDevicesOfAP(AP) {
         numDevices = 50;
     } else if (AP == "secretaria"){
         numDevices = 35;
-    }else if (AP == "sala dos nucleos"){ 
+    }else if (AP == "sala dos nucleos"){
         numDevices = 10;
     }
     // deti piso 2
-    else if (AP == "sala de redes"){ 
+    else if (AP == "sala de redes"){
         numDevices = 40;
-    } 
-    else if (AP == "area de salas"){ 
+    }
+    else if (AP == "area de salas"){
         numDevices = 20;
     }
-    else if (AP == "area do canto"){ 
+    else if (AP == "area do canto"){
         numDevices = 10;
     }
-    else if (AP == "area de gabinetes"){ 
+    else if (AP == "area de gabinetes"){
         numDevices = 18;
     }
-    else if (AP == "area de gabinetes com sala"){ 
+    else if (AP == "area de gabinetes com sala"){
         numDevices = 25;
     }
     // deti piso 3
-    else if (AP == "area de SE"){ 
+    else if (AP == "area de SE"){
         numDevices = 39;
-    } 
-    else if (AP == "area de salinhas"){ 
+    }
+    else if (AP == "area de salinhas"){
         numDevices = 26;
     }
-    else if (AP == "area de gabinetes3"){ 
+    else if (AP == "area de gabinetes3"){
         numDevices = 6;
     }
-    else if (AP == "area de gabinetes com sala3"){ 
+    else if (AP == "area de gabinetes com sala3"){
         numDevices = 14;
     }
     else {
@@ -84,6 +114,8 @@ function getNumDevicesOfAP(AP) {
     }
 
     return numDevices;
+
+     */
 }
 
 
@@ -134,8 +166,15 @@ const handleChange = (event, newValue) => {
     const current = currentTime.getTime();
     console.log(currentTime);
   };
+function f(data) {
+    console.log(data)
+    testdynamicvalues = data.numDevices
 
+
+}
 export class DepartmentGeneric extends React.Component{
+
+
     constructor(props) {
         super(props);
         this.state = {string : "Piso "+ slideIndex};
@@ -146,6 +185,9 @@ export class DepartmentGeneric extends React.Component{
 
     }
     render() {
+
+        console.log("123"+abc)
+
         var imagempiso1 = "./logo512.png";
         var imagempiso2 = "./logo512.png";
         var imagempiso3 = "./logo512.png";
@@ -175,19 +217,19 @@ export class DepartmentGeneric extends React.Component{
                         {name: getClickAPText("anfiteatro"), shape: "circle", coords: [366,774,15], preFillColor: "rgba(0,0,250,1)"},
                         {name: getClickAPText("salas computadores"), shape: "circle", coords: [539,818,15], preFillColor: "rgba(0,0,250,1)"},
                         {name: getClickAPText("secretaria"), shape: "circle", coords: [912,804,15], preFillColor: "rgba(0,0,250,1)"},
-                        
+
                         // areas
-                        {name: "4.1.04 - 9", shape: "rect", coords: [435,687,770,958], preFillColor: getColorFromNumDevices( getNumDevicesOfAP("salas computadores") )}, // 4.1.18
+                        {name: "4.1.04 - 9", shape: "rect", coords: [435,687,770,958], preFillColor: getColorFromNumDevices( getNumDevicesOfAP(aps[5].mac) )}, // 4.1.18
 
-                        {name: "4.1.01 - 3", shape: "rect", coords: [209,687,432,958], preFillColor: getColorFromNumDevices( getNumDevicesOfAP("anfiteatro") )}, // anfiteatro
- 
-                        {name: "4.1.11 - 17", shape: "poly", coords: [993,559, 773,559, 773,958, 1105,957, 1105,688, 993,688], preFillColor: getColorFromNumDevices( getNumDevicesOfAP("secretaria") )}, // area de redes
-                    
-                        {name: "4.1.28 - 32", shape: "rect", coords: [1477,96,1702,366], preFillColor: getColorFromNumDevices( getNumDevicesOfAP("sala dos nucleos") )}, // nucleos
-                        
-                        {name: "4.1.23 - 27, 4.1.34", shape: "rect", coords: [1163,96,1476,366], preFillColor: getColorFromNumDevices( getNumDevicesOfAP("makerLab") )},
+                        {name: "4.1.01 - 3", shape: "rect", coords: [209,687,432,958], preFillColor: getColorFromNumDevices( getNumDevicesOfAP(aps[6].mac) )}, // anfiteatro
 
-                        {name: "4.1.18 - 20, 4.1.36", shape: "poly", coords: [804,364, 928,364, 928,492, 1105,492, 1105,372, 1159,372, 1159,96, 801,96], preFillColor: getColorFromNumDevices( getNumDevicesOfAP("salaEstudo") )}, // 4.1.18
+                        {name: "4.1.11 - 17", shape: "poly", coords: [993,559, 773,559, 773,958, 1105,957, 1105,688, 993,688], preFillColor: getColorFromNumDevices( getNumDevicesOfAP(aps[7].mac) )}, // area de redes
+
+                        {name: "4.1.28 - 32", shape: "rect", coords: [1477,96,1702,366], preFillColor: getColorFromNumDevices( getNumDevicesOfAP(aps[8].mac) )}, // nucleos
+
+                        {name: "4.1.23 - 27, 4.1.34", shape: "rect", coords: [1163,96,1476,366], preFillColor: getColorFromNumDevices( getNumDevicesOfAP(aps[9].mac) )},
+
+                        {name: "4.1.18 - 20, 4.1.36", shape: "poly", coords: [804,364, 928,364, 928,492, 1105,492, 1105,372, 1159,372, 1159,96, 801,96], preFillColor: getColorFromNumDevices( getNumDevicesOfAP(aps[10].mac) )}, // 4.1.18
 
                     ]
                 };
@@ -200,22 +242,22 @@ export class DepartmentGeneric extends React.Component{
                         {name: getClickAPText("area do canto"), shape: "circle", coords: [292,774,15], preFillColor: "rgba(0,0,250,1)"},
                         {name: getClickAPText("area de gabinetes"), shape: "circle", coords: [1415,248,15], preFillColor: "rgba(0,0,250,1)"},
                         {name: getClickAPText("area de gabinetes com sala"), shape: "circle", coords: [982,268,15], preFillColor: "rgba(0,0,250,1)"},
-    
+
 
                         // area de gabinetes
-                        {name: "4.2.32 - 46", shape: "rect", coords: [1137,96,1702,366], preFillColor: getColorFromNumDevices( getNumDevicesOfAP("area de gabinetes") )}, // 4.1.18
+                        {name: "4.2.32 - 46", shape: "rect", coords: [1137,96,1702,366], preFillColor: getColorFromNumDevices( getNumDevicesOfAP(aps[0].mac) )}, // 4.1.18
 
                         // area de gabinetes com sala
-                        {name: "4.2.23 - 31", shape: "poly", coords: [804,364, 914,364, 915,492, 1138,492, 1138,96, 801,96], preFillColor: getColorFromNumDevices( getNumDevicesOfAP("area de gabinetes com salas") )}, // 4.1.18
+                        {name: "4.2.23 - 31", shape: "poly", coords: [804,364, 914,364, 915,492, 1138,492, 1138,96, 801,96], preFillColor: getColorFromNumDevices( getNumDevicesOfAP(aps[1].mac) )}, // 4.1.18
 
                         // area de salas
-                        {name: "4.2.08 - 14", shape: "rect", coords: [435,687,768,958], preFillColor: getColorFromNumDevices( getNumDevicesOfAP("area de salas") )}, // 4.1.18
+                        {name: "4.2.08 - 14", shape: "rect", coords: [435,687,768,958], preFillColor: getColorFromNumDevices( getNumDevicesOfAP(aps[2].mac) )}, // 4.1.18
 
                         // area do canto
-                        {name: "4.2.01 - 7", shape: "rect", coords: [209,687,432,958], preFillColor: getColorFromNumDevices( getNumDevicesOfAP("area do canto") )}, // 4.1.18
+                        {name: "4.2.01 - 7", shape: "rect", coords: [209,687,432,958], preFillColor: getColorFromNumDevices( getNumDevicesOfAP(aps[3].mac) )}, // 4.1.18
 
                         // area de redes
-                        {name: "4.2.15 - 22", shape: "poly", coords: [993,559, 773,559, 773,958, 1105,957, 1105,688, 993,688], preFillColor: getColorFromNumDevices( getNumDevicesOfAP("sala de redes") )}, // area de redes
+                        {name: "4.2.15 - 22", shape: "poly", coords: [993,559, 773,559, 773,958, 1105,957, 1105,688, 993,688], preFillColor: getColorFromNumDevices( getNumDevicesOfAP(aps[4].mac) )}, // area de redes
                     ]
                 };
                 MAP3 = {
@@ -226,19 +268,19 @@ export class DepartmentGeneric extends React.Component{
                         {name: getClickAPText("area de salinhas"), shape: "circle", coords: [417,773,15], preFillColor: "rgba(0,0,250,1)"},
                         {name: getClickAPText("area de gabinetes3"), shape: "circle", coords: [1414,249,15], preFillColor: "rgba(0,0,250,1)"},
                         {name: getClickAPText("area de gabinetes com sala3"), shape: "circle", coords: [1037,292,15], preFillColor: "rgba(0,0,250,1)"},
-    
+
 
                         // area de SE
-                        {name: "4.3.15 - 24", shape: "poly", coords: [993,559, 994,687, 1104,688, 1104,958, 660,958, 660,769, 654,769, 654,687, 773,687, 773,559], preFillColor: getColorFromNumDevices( getNumDevicesOfAP("area de SE") )}, // 4.1.18
+                        {name: "4.3.15 - 24", shape: "poly", coords: [993,559, 994,687, 1104,688, 1104,958, 660,958, 660,769, 654,769, 654,687, 773,687, 773,559], preFillColor: getColorFromNumDevices( getNumDevicesOfAP(aps[11].mac) )}, // 4.1.18
 
                         // area de salinhas
-                        {name: "4.3.01 - 17", shape: "rect", coords: [208,687,659,958], preFillColor: getColorFromNumDevices( getNumDevicesOfAP("area de salinhas") )}, // 4.1.18
+                        {name: "4.3.01 - 17", shape: "rect", coords: [208,687,659,958], preFillColor: getColorFromNumDevices( getNumDevicesOfAP(aps[12].mac) )}, // 4.1.18
 
                         // area de gabinetes3
-                        {name: "4.3.33 - 47", shape: "rect", coords: [1164,94,1702,365], preFillColor: getColorFromNumDevices( getNumDevicesOfAP("area de gabinetes3") )}, // 4.1.18
+                        {name: "4.3.33 - 47", shape: "rect", coords: [1164,94,1702,365], preFillColor: getColorFromNumDevices( getNumDevicesOfAP(aps[13].mac) )}, // 4.1.18
 
                         // area de gabinetes com sala 3
-                        {name: "4.3.25 - 32", shape: "poly", coords: [914,492, 1136,492, 1136,365, 1161,365, 1161,94, 801,94, 801,365, 914,365], preFillColor: getColorFromNumDevices( getNumDevicesOfAP("area de gabinetes com sala3") )}, // 4.1.18
+                        {name: "4.3.25 - 32", shape: "poly", coords: [914,492, 1136,492, 1136,365, 1161,365, 1161,94, 801,94, 801,365, 914,365], preFillColor: getColorFromNumDevices( getNumDevicesOfAP(aps[13].mac) )}, // 4.1.18
 
                     ]
                 };
@@ -255,7 +297,7 @@ export class DepartmentGeneric extends React.Component{
                         {name: getClickAPText("area botleft"), shape: "circle", coords: [536,772,15], preFillColor: "rgba(0,0,250,1)"},
                         {name: getClickAPText("area mid"), shape: "circle", coords: [867,776,15], preFillColor: "rgba(0,0,250,1)"},
                         {name: getClickAPText("area botright"), shape: "circle", coords: [1224,776,15], preFillColor: "rgba(0,0,250,1)"},
-    
+
 
                         // area topleft
                         {name: "11.1.07 - 12", shape: "rect", coords: [211,286,570,490], preFillColor: getColorFromNumDevices( getNumDevicesOfAP("area topleft") )}, // topleft
@@ -279,7 +321,7 @@ export class DepartmentGeneric extends React.Component{
                         {name: getClickAPText("area botleft2"), shape: "circle", coords: [551,813,15], preFillColor: "rgba(0,0,250,1)"},
                         {name: getClickAPText("area mid2"), shape: "circle", coords: [857,776,15], preFillColor: "rgba(0,0,250,1)"},
                         {name: getClickAPText("area botright2"), shape: "circle", coords: [1224,776,15], preFillColor: "rgba(0,0,250,1)"},
-    
+
 
                         // area topleft
                         {name: "11.2.8 - 16", shape: "rect", coords: [211,286,570,634], preFillColor: getColorFromNumDevices( getNumDevicesOfAP("area topleft2") )}, // topleft
@@ -303,7 +345,7 @@ export class DepartmentGeneric extends React.Component{
                         {name: getClickAPText("area botleft3"), shape: "circle", coords: [464,852,15], preFillColor: "rgba(0,0,250,1)"},
                         {name: getClickAPText("area mid3"), shape: "circle", coords: [831,751,15], preFillColor: "rgba(0,0,250,1)"},
                         {name: getClickAPText("area botright3"), shape: "circle", coords: [1188,750,15], preFillColor: "rgba(0,0,250,1)"},
-    
+
 
                         // area topleft
                         {name: "11.3.12 - 23", shape: "rect", coords: [207,275,590,665], preFillColor: getColorFromNumDevices( getNumDevicesOfAP("area topleft3") )}, // topleft
@@ -338,7 +380,7 @@ export class DepartmentGeneric extends React.Component{
         */
         return (
             <div>
-                <div className="centrado" > 
+                <div className="centrado" >
                         <p> Legenda (num de devices conectados): </p>
                         <div className="square" style={{backgroundColor : 'rgba(0,255,0,0.6)', right : '200px'}}> 0 a 10 </div>
                         <div className="square" style={{backgroundColor : 'rgba(255,255,0,0.6)', right : '150px'}}> 11 a 20 </div>
@@ -376,7 +418,7 @@ export class DepartmentGeneric extends React.Component{
                     <span className="dot" onClick={() => currentSlide(2)}></span>
                     <span className="dot" onClick={() => currentSlide(3)}></span>
                 </div>
-                
+
                 <div className="slider" style={{position:'absolute', right: 20, bottom: 30, width: 250, height: 75, background: '#fff', padding: 12, 'border-radius': 25}}>
                     <Typography id="discrete-slider" gutterBottom>
                         Tempo
@@ -393,7 +435,7 @@ export class DepartmentGeneric extends React.Component{
                         track='inverted'
                         onChange={handleChange}
                     />
-                </div> 
+                </div>
 
             </div>
         );
