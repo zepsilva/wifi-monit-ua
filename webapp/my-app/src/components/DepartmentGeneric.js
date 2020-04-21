@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {GridWithImage} from './GridWithImage';
 import './DepartmentGeneric.css';
 import ImageMapper from 'react-image-mapper';
+import { Slider, Typography } from '@material-ui/core';
+
 
 var slideIndex = 1;
  
@@ -122,6 +124,16 @@ function handleHoverON(e){
 function handleHoverOFF(e){
     this.setState({string : "Piso "+ slideIndex});
 }
+
+const maxHourValue = 12;
+
+const handleChange = (event, newValue) => {
+    const currentTime = new Date();
+    const newHour = currentTime.getHours() + newValue - maxHourValue;
+    currentTime.setHours(newHour);
+    const current = currentTime.getTime();
+    console.log(currentTime);
+  };
 
 export class DepartmentGeneric extends React.Component{
     constructor(props) {
@@ -375,6 +387,24 @@ export class DepartmentGeneric extends React.Component{
                     <span className="dot" onClick={() => currentSlide(2)}></span>
                     <span className="dot" onClick={() => currentSlide(3)}></span>
                 </div>
+                
+                <div className="slider" style={{position:'absolute', right: 20, bottom: 30, width: 250, height: 75, background: '#fff', padding: 12, 'border-radius': 25}}>
+                    <Typography id="discrete-slider" gutterBottom>
+                        Tempo
+                    </Typography>
+                    <Slider
+                        defaultValue={12}
+                        aria-labelledby="discrete-slider"
+                        valueLabelDisplay="auto"
+                        step={1}
+                        marks={true}
+                        min={0}
+                        max={maxHourValue}
+                        scale={(x) => -(maxHourValue - x)}        // the scale is dependent on the maximum value
+                        track='inverted'
+                        onChange={handleChange}
+                    />
+                </div> 
 
             </div>
         );

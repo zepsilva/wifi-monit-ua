@@ -1,61 +1,42 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect} from 'react';
 import ReactMapGL, {NavigationControl, Marker, Source, Layer, Popup} from "react-map-gl";
-import { Button, IconButton } from '@material-ui/core';
+import { Button, IconButton, Slider, Typography } from '@material-ui/core';
 import { Link } from "react-router-dom";
-import depGeoJSON from "../JSON/depsGeoJSON.geojson";
 import depLoc from "../JSON/depLoc.json";
 import ApartmentIcon from '@material-ui/icons/Apartment';
 
 export default function Map() {
+  
+
   const [viewport, setViewport] = useState({
     latitude: 40.629620,
     longitude: -8.657000,
     zoom: 16,
-    width: "99vw",
-    height: "92vh",
+    width: "99.5vw",
+    height: "94vh",
     bearing: 275
   });
   
   const settings = {
     minZoom: 16
   }
+  const maxHourValue = 12;
 
   const [selectDep, setSelectDep] = useState(null);
   const [highlight, setHighlight] = useState(false);
-  
-  const depLayer = {            /* Department inactive background layer */ 
-    id: 'dep',
-    type: 'fill',
-    paint: {
-      'fill-outline-color': '#000000',
-      'fill-color': '#000000'
-    }
-  };
+  const [selectHour, setSelectHour] = useState(null);
 
-  const highlightLayer = {      /* Department highlighted layer */
-    id: 'depHighlight',
-    type: 'fill',
-    paint: {
-      'fill-outline-color': '#484896',
-      'fill-color': '#6e599f',
-      'fill-opacity': 0.75
-    }
-  };
-
-  const geojson = {
-    type: 'Feature', 
-    geometry: {"type": "Polygon",
-      "coordinates": [
-        [
-          [40.632714, -8.659114], [40.632730, -8.659340], [40.633096, -8.659353],
-          [40.633102, -8.659670], [40.633517, -8.659678], [40.633519, -8.659490],
-          [40.633252, -8.659487], [40.633248, -8.659128], [40.632714, -8.659114]
-        ]
-      ]
-    }
+  const handleChange = (event, newValue) => {
+    setSelectHour(newValue);
+    const currentTime = new Date();
+    const newHour = currentTime.getHours() + newValue - maxHourValue;
+    currentTime.setHours(newHour);
+    const current = currentTime.getTime();
+    console.log(currentTime);
   };
 
   return (
+    <div>
     <ReactMapGL
       {...viewport}
       {...settings}
@@ -67,9 +48,11 @@ export default function Map() {
           <Layer id="depHighlight"{...highlightLayer} />
       </Source>
     */}
-      <div style={{position: 'absolute', right: 0}}>
+      <div style={{position: 'absolute', right: 10, top: 10}}>
           <NavigationControl />
       </div>
+
+      
 
       {depLoc.departments.map(department => (
         <Marker key={department.DEP_NUMBER} latitude={department.coordinates[0]} longitude={department.coordinates[1]}>
@@ -93,23 +76,24 @@ export default function Map() {
         </Popup>
       )}
       
-      {/*<Marker
-        key={1}
-        latitude={40.633213}
-        longitude={-8.659457}
-      >
-        
-        <Link to={{
-                    pathname:'/department',
-                    state:{
-                        depNum: 4
-                    }
-                  }}>
-          <Button variant="contained" color="primary" size="small">
-            DETI
-          </Button>
-        </Link>
-      </Marker> */}
     </ReactMapGL>
+    <div className="slider" style={{position:'absolute', right: 20, bottom: 30, width: 250, height: 75, background: '#fff', padding: 12, 'border-radius': 25}}>
+        <Typography id="discrete-slider" gutterBottom>
+          Tempo
+        </Typography>
+        <Slider
+          defaultValue={12}
+          aria-labelledby="discrete-slider"
+          valueLabelDisplay="auto"
+          step={1}
+          marks={true}
+          min={0}
+          max={maxHourValue}
+          scale={(x) => -(maxHourValue - x)}        // the scale is dependent on the maximum value
+          track='inverted'
+          onChange={handleChange}
+        />
+      </div>
+    </div>
   );
 }
