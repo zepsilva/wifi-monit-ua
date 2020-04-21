@@ -112,47 +112,101 @@ def test():
 
 
 def updateBD():
-    conn = MySQLdb.connect("localhost", "daniel", "131199", "db1")
+    conn = MySQLdb.connect("localhost", "api", "api", "APmaps")
     c = conn.cursor()
-
+    print("%02x%02x%02x%02x%02x%02x" % (random.randint(0, 255),
+                                 random.randint(0, 255),
+                                 random.randint(0, 255),
+                                 random.randint(0, 255),
+                                 random.randint(0, 255),
+                                 random.randint(0, 255)))
     builds = buildings()
     for b in builds:
         b.update()
         print(b.id)
-        try:
-            c.execute("insert into Building values (%s)", b.id)
-        except:
-            print("ERROR")
-            sys.exit(1)
+        #c.execute("insert into Building values (%s)", [b.id])
         for block in b.blocks:
             print("\t" + block.name)
-            try:
-                c.execute("insert into Block values (%s,%s)", (b.id, block.name))
-            except:
-                print("ERROR")
-                sys.exit(1)
+            #c.execute("insert into Block values (%s,%s)", [b.id, block.name])
             for floor in block.floors:
                 print("\t\t" + floor.name)
-                try:
-                    c.execute("insert into Floor values (%s,%s,%s,%s)", (b.id,block.name, floor.name, floor.number))
-                except:
-                    print("ERROR")
-                    sys.exit(1)
+                #c.execute("insert into Floor values (%s,%s,%s,%s)", [b.id,block.name, floor.name, floor.number])
                 for ap in floor.aps:
                     print("\t\t\t" + "x: " + str(ap.x) + " y: " + str(ap.y))
-                    try:
-                        c.execute("insert into AP values (%s,%s,%s,%s,%s,%s)",(
-                              "02:00:00:%02x:%02x:%02x" % (random.randint(0, 255),
+                    c.execute("insert into AP values (%s,%s,%s,%s,%s,%s)",[
+                              "%02x%02x%02x%02x%02x%02x" % (random.randint(0, 255),
+                                 random.randint(0, 255),
+                                 random.randint(0, 255),
+                                 random.randint(0, 255),
                                  random.randint(0, 255),
                                  random.randint(0, 255)),
                               b.id,
                               block.name,
                               floor.name,
                               ap.x,
-                              ap.y))
-                    except:
-                        print("ERROR")
-                        sys.exit(1)
+                              ap.y])
+    
+    conn.commit()
+    print("Buildings Table:")
+    print("ID")
+    c.execute("select * from Building")
+    rows = c.fetchall()
+    for row in rows:
+        print(row)
+
+    print("Blocks Table:")
+    print("BildingID, BlockName")
+    c.execute("select * from Block")
+    rows = c.fetchall()
+    for row in rows:
+        print(row)
+    
+    print("Floors Table:")
+    print("Building, Block, FloorName, FloorNumber")
+    c.execute("select * from Floor")
+    rows = c.fetchall()
+    for row in rows:
+        print(row)
+    
+    print("APs Table:")
+    print("Building, Block, Floor, x, y")
+    c.execute("select * from AP")
+    rows = c.fetchall()
+    for row in rows:
+        print(row)
+
+
+def showBD():
+    conn = MySQLdb.connect("localhost", "api", "api", "APmaps")
+    c = conn.cursor()
+    print("Buildings Table:")
+    print("ID")
+    c.execute("select * from Building")
+    rows = c.fetchall()
+    for row in rows:
+        print(row)
+
+    print("Blocks Table:")
+    print("BildingID, BlockName")
+    c.execute("select * from Block")
+    rows = c.fetchall()
+    for row in rows:
+        print(row)
+
+    print("Floors Table:")
+    print("Building, Block, FloorName, FloorNumber")
+    c.execute("select * from Floor")
+    rows = c.fetchall()
+    for row in rows:
+        print(row)
+
+    print("APs Table:")
+    print("Building, Block, Floor, x, y")
+    c.execute("select * from AP")
+    rows = c.fetchall()
+    for row in rows:
+        print(row)
+
 
 def all():
     buildings = []
@@ -176,3 +230,8 @@ def all():
 #all()
 #test()
 updateBD()
+#showBD()
+
+
+
+
