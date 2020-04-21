@@ -40,31 +40,31 @@ def number_clients_ap_generator(self, time_now):
         else: 
             for accessPoint in DATA['AccessPoints']:
                 temp = accessPoint['clientCount']
-                accessPoint['clientCount'] += random.randint(0, 2)
+                accessPoint['clientCount'] += random.randint(0, 1)
                 update_clients(self, accessPoint['macAddress'], accessPoint['clientCount'] - temp)
 
     if time_now >= time(12, 0, 0, 0) and time_now < time(13, 0, 0, 0):
         for accessPoint in DATA['AccessPoints']:
-            if accessPoint['clientCount'] < 3:
+            if accessPoint['clientCount'] < 2:
                 continue
             else:
                 temp = accessPoint['clientCount']
-                accessPoint['clientCount'] -= random.randint(0, 3)
+                accessPoint['clientCount'] -= random.randint(0, 2)
                 update_clients(self, accessPoint['macAddress'], accessPoint['clientCount'] - temp)
 
     if time_now >= time(13, 0, 0, 0) and time_now < time(14, 0, 0, 0):
         for accessPoint in DATA['AccessPoints']:
-            if accessPoint['clientCount'] < 4:
+            if accessPoint['clientCount'] < 2:
                 continue
             else:
                 temp = accessPoint['clientCount']
-                accessPoint['clientCount'] -= random.randint(0, 4)
+                accessPoint['clientCount'] -= random.randint(0, 2)
                 update_clients(self, accessPoint['macAddress'], accessPoint['clientCount'] - temp)
 
     if time_now >= time(14, 0, 0, 0) and time_now < time(15, 0, 0, 0):
         for accessPoint in DATA['AccessPoints']:
             temp = accessPoint['clientCount']
-            accessPoint['clientCount'] += random.randint(0, 3)
+            accessPoint['clientCount'] += random.randint(0, 2)
             update_clients(self, accessPoint['macAddress'], accessPoint['clientCount'] - temp)
 
     if time_now >= time(15, 0, 0, 0) and time_now < time(18, 0, 0, 0):
@@ -79,7 +79,7 @@ def number_clients_ap_generator(self, time_now):
                 continue
             else:
             	temp = accessPoint['clientCount']
-            	accessPoint['clientCount'] -= random.randint(0, 5)
+            	accessPoint['clientCount'] -= random.randint(0, 3)
             	update_clients(self, accessPoint['macAddress'], accessPoint['clientCount'] - temp)
 
     if time_now >= time(20, 0, 0, 0) and time_now < time(22, 0, 0, 0):
@@ -103,7 +103,7 @@ def number_clients_ap_generator(self, time_now):
                 continue
             else:
                 temp = accessPoint['clientCount']
-                accessPoint['clientCount'] -= random.randint(0, 1)
+                accessPoint['clientCount'] -= random.randint(0, 4)
                 update_clients(self, accessPoint['macAddress'], accessPoint['clientCount'] - temp)
 
     with open('resources/data.json', 'w') as write_file:
@@ -146,45 +146,45 @@ def abort_no_search_term(search_term):
 
 class Clients(Resource):
     def get(self):
-        #time = datetime.now()
-        #global last_call
+        time = datetime.now()
+        global last_call
 
-        #if last_call <= time - timedelta(minutes=15):
-        #    last_call = time
-        #    number_clients_ap_generator(self, time.time())
+        if last_call <= time - timedelta(minutes=9):
+            last_call = time
+            number_clients_ap_generator(self, time.time())
 
         return DATA['Clients']
 
 class AccessPoints(Resource):
     def get(self):
-        #time = datetime.now()
-        #global last_call
+        time = datetime.now()
+        global last_call
         
-        #if last_call <= time - timedelta(minutes=15):
-        #    last_call = time
-        #    number_clients_ap_generator(self, time.time())
+        if last_call <= time - timedelta(minutes=9):
+            last_call = time
+            number_clients_ap_generator(self, time.time())
 
         return DATA['AccessPoints']
 
 class ClientSessions(Resource):
     def get(self):
-        #time = datetime.now()
-        #global last_call
+        time = datetime.now()
+        global last_call
         
-        #if last_call <= time - timedelta(minutes=15):
-        #    last_call = time
-        #    number_clients_ap_generator(self, time.time())
+        if last_call <= time - timedelta(minutes=9):
+            last_call = time
+            number_clients_ap_generator(self, time.time())
 
         return DATA['ClientSessions']
 
 class ClientSessionsSearch(Resource):
     def get(self, search_term):
-        #time = datetime.now()
-        #global last_call
+        time = datetime.now()
+        global last_call
         
-        #if last_call <= time - timedelta(minutes=15):
-        #    last_call = time
-        #    number_clients_ap_generator(self, time.time())
+        if last_call <= time - timedelta(minutes=9):
+            last_call = time
+            number_clients_ap_generator(self, time.time())
         
         term_value = search_term.split('=')
         abort_no_search_term(term_value[0])
