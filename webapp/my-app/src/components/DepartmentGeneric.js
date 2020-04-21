@@ -4,6 +4,7 @@ import './DepartmentGeneric.css';
 import ImageMapper from 'react-image-mapper';
 
 var slideIndex = 1;
+var basedir = "../static/react/"
  
 function showSlides(n) {
     var i;
@@ -134,9 +135,9 @@ export class DepartmentGeneric extends React.Component{
 
     }
     render() {
-        var imagempiso1 = "./logo512.png";
-        var imagempiso2 = "./logo512.png";
-        var imagempiso3 = "./logo512.png";
+        var imagempiso1 = basedir+"logo512.png";
+        var imagempiso2 = basedir+"logo512.png";
+        var imagempiso3 = basedir+"logo512.png";
         var MAP1 = {name : "default", areas: []};
         var MAP2 = {name : "default2", areas: []};
         var MAP3 = {name : "default3", areas: []};
@@ -150,9 +151,9 @@ export class DepartmentGeneric extends React.Component{
 
         switch(this.props.id.depNum) {
             case 4:
-                imagempiso1 = "./images/dep4_p1.png";
-                imagempiso2 = "./images/dep4_p2.png";
-                imagempiso3 = "./images/dep4_p3.png";
+                imagempiso1 = basedir+"images/dep4_p1.png";
+                imagempiso2 = basedir+"images/dep4_p2.png";
+                imagempiso3 = basedir+"images/dep4_p3.png";
                 MAP1 = {
                     name: "mapadetipiso1",
                     areas: [
@@ -250,9 +251,9 @@ export class DepartmentGeneric extends React.Component{
                 };
                 break;
             case 11:
-                imagempiso1 = "./images/dep11_p1.png";
-                imagempiso2 = "./images/dep11_p2.png";
-                imagempiso3 = "./images/dep11_p3.png";
+                imagempiso1 = basedir+"images/dep11_p1.png";
+                imagempiso2 = basedir+"images/dep11_p2.png";
+                imagempiso3 = basedir+"images/dep11_p3.png";
                 MAP1 = {
                     name: "mapadmatpiso1",
                     areas: [
