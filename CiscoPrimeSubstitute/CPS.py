@@ -1,3 +1,18 @@
+#!/usr/bin/env python3
+
+# How to run server
+# nohup /home/oneadmin/wifi-monit-ua/CiscoPrimeSubstitute/CPS.py &
+
+# HTTP GET COMMANDS
+# curl http://127.0.0.1:5000/webacs/api/v1/data/AccessPoints
+# curl http://127.0.0.1:5000/webacs/api/v1/data/Clients
+# curl http://127.0.0.1:5000/webacs/api/v1/data/ClientSessions
+# curl http://127.0.0.1:5000/webacs/api/v1/data/ClientSessions/<search_term>
+
+# How to stop server
+# pkill -f CPS.py
+
+
 from flask import Flask
 from flask_restful import abort, Api, Resource
 from resources import *
@@ -63,9 +78,9 @@ def number_clients_ap_generator(self, time_now):
             if accessPoint['clientCount'] < 5:
                 continue
             else:
-                temp = accessPoint['clientCount']
-                accessPoint['clientCount'] -= random.randint(0, 5)
-                update_clients(self, accessPoint['macAddress'], accessPoint['clientCount'] - temp)
+            	temp = accessPoint['clientCount']
+            	accessPoint['clientCount'] -= random.randint(0, 5)
+            	update_clients(self, accessPoint['macAddress'], accessPoint['clientCount'] - temp)
 
     if time_now >= time(20, 0, 0, 0) and time_now < time(22, 0, 0, 0):
         for accessPoint in DATA['AccessPoints']:
@@ -82,7 +97,7 @@ def number_clients_ap_generator(self, time_now):
             accessPoint['clientCount'] += random.randint(0, 1)
             update_clients(self, accessPoint['macAddress'], accessPoint['clientCount'] - temp)
 
-    if time_now >= time.max and time_now < time(9, 0, 0, 0):
+    if time_now >= time.min and time_now < time(9, 0, 0, 0):
         for accessPoint in DATA['AccessPoints']:
             if accessPoint['clientCount'] < 1:
                 continue
@@ -108,19 +123,20 @@ def update_clients(self, apMacAddress, numClientsCreateOrRemove):
             DATA["ClientSessions"].append({"apMacAddress": apMacAddress, "macAddress": macAddDevice, "protocol": "UNDEFINED", "userName": "admin"})
 
     else:
+
         removed = 0
 
         for i in range(0, len(DATA['Clients'])):
-            if DATA['Clients'][i]['apMacAddress'] is apMacAddress and removed < numClientsCreateOrRemove:
-                DATA['Clients'].pop(i)
-                removed += 1
+            if DATA['Clients'][i + removed]['apMacAddress'] == apMacAddress and removed > numClientsCreateOrRemove:
+                DATA['Clients'].pop(i + removed)
+                removed -= 1
 
         removed = 0
 
         for i in range(0, len(DATA['ClientSessions'])):
-            if DATA['ClientSessions'][i]['apMacAddress'] is apMacAddress and removed < numClientsCreateOrRemove:
-                DATA['ClientSessions'].pop(i)
-                removed += 1
+            if DATA['ClientSessions'][i + removed]['apMacAddress'] == apMacAddress and removed > numClientsCreateOrRemove:
+                DATA['ClientSessions'].pop(i + removed)
+                removed -= 1
 
 
 # creating API methods
@@ -130,45 +146,45 @@ def abort_no_search_term(search_term):
 
 class Clients(Resource):
     def get(self):
-        time = datetime.now()
-        global last_call
+        #time = datetime.now()
+        #global last_call
 
-        if last_call <= time - timedelta(minutes=15):
-            last_call = time
-            number_clients_ap_generator(self, time.time())
+        #if last_call <= time - timedelta(minutes=15):
+        #    last_call = time
+        #    number_clients_ap_generator(self, time.time())
 
         return DATA['Clients']
 
 class AccessPoints(Resource):
     def get(self):
-        time = datetime.now()
-        global last_call
+        #time = datetime.now()
+        #global last_call
         
-        if last_call <= time - timedelta(minutes=15):
-            last_call = time
-            number_clients_ap_generator(self, time.time())
+        #if last_call <= time - timedelta(minutes=15):
+        #    last_call = time
+        #    number_clients_ap_generator(self, time.time())
 
         return DATA['AccessPoints']
 
 class ClientSessions(Resource):
     def get(self):
-        time = datetime.now()
-        global last_call
+        #time = datetime.now()
+        #global last_call
         
-        if last_call <= time - timedelta(minutes=15):
-            last_call = time
-            number_clients_ap_generator(self, time.time())
+        #if last_call <= time - timedelta(minutes=15):
+        #    last_call = time
+        #    number_clients_ap_generator(self, time.time())
 
         return DATA['ClientSessions']
 
 class ClientSessionsSearch(Resource):
     def get(self, search_term):
-        time = datetime.now()
-        global last_call
+        #time = datetime.now()
+        #global last_call
         
-        if last_call <= time - timedelta(minutes=15):
-            last_call = time
-            number_clients_ap_generator(self, time.time())
+        #if last_call <= time - timedelta(minutes=15):
+        #    last_call = time
+        #    number_clients_ap_generator(self, time.time())
         
         term_value = search_term.split('=')
         abort_no_search_term(term_value[0])
@@ -188,4 +204,4 @@ api.add_resource(ClientSessionsSearch, '/webacs/api/v1/data/ClientSessions/<sear
 
 
 if __name__ == '__main__':
-    app.run(debug=True) 
+    app.run() 
