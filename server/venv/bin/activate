@@ -37,7 +37,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="/home/daniel/Data/Universidade/PEI/wifi-monit-ua/server/venv"
+VIRTUAL_ENV="/home/eduardoluis33/Desktop/PEI/wifi-monit-ua/server/venv"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

@@ -63,7 +63,7 @@ function getNumDevicesOfAP(AP) {
     for (var ap in aps)
         if(AP == ap.mac)
             return ap.numDevices
-    return 0
+    return 11
     /*
     var numDevices = 0;
     // deti piso 1
@@ -136,7 +136,7 @@ function getColorFromNumDevices(numDevices){
 }
 
 function getClickAPText(AP) {
-    return "AP: " + AP + ", NUM OF CONNECTED DEVICES: " + getNumDevicesOfAP(AP);
+    return "AP: " + AP + ", Number of connected devices: " + getNumDevicesOfAP(AP);
 }
 
 function handleClick(e){
@@ -177,7 +177,10 @@ export class DepartmentGeneric extends React.Component{
 
     constructor(props) {
         super(props);
-        this.state = {string : "Piso "+ slideIndex};
+        this.state = {string : "Piso "+ slideIndex,
+                    basecolor : "rgba(0,0,250,1)",
+                    baseraio : 15
+    };
     }
 
     componentDidMount(){
@@ -201,6 +204,11 @@ export class DepartmentGeneric extends React.Component{
         //console.log(this.props.id.depNum);
         // Next/previous controls
 
+        if(this.props.id.myConnectionButton == 1){
+            slideIndex = 1;
+            this.state.basecolor = "rgba(250,0,0,1)";
+            this.state.baseraio = 40;
+        }
 
         switch(this.props.id.depNum) {
             case 4:
@@ -211,12 +219,12 @@ export class DepartmentGeneric extends React.Component{
                     name: "mapadetipiso1",
                     areas: [
                         // APs
-                        {name: getClickAPText("salaEstudo"), shape: "circle", coords: [944,237,15], preFillColor: "rgba(0,0,250,1)"},
-                        {name: getClickAPText("makerLab"), shape: "circle", coords: [1360,235,15], preFillColor: "rgba(0,0,250,1)"},
-                        {name: getClickAPText("sala dos nucleos"), shape: "circle", coords: [1566,235,15], preFillColor: "rgba(0,0,250,1)"},
-                        {name: getClickAPText("anfiteatro"), shape: "circle", coords: [366,774,15], preFillColor: "rgba(0,0,250,1)"},
-                        {name: getClickAPText("salas computadores"), shape: "circle", coords: [539,818,15], preFillColor: "rgba(0,0,250,1)"},
-                        {name: getClickAPText("secretaria"), shape: "circle", coords: [912,804,15], preFillColor: "rgba(0,0,250,1)"},
+                        {name: getClickAPText(aps[5].mac), shape: "circle", coords: [944,237,15], preFillColor: "rgba(0,0,250,1)"},
+                        {name: getClickAPText(aps[6].mac), shape: "circle", coords: [1360,235,this.state.baseraio], preFillColor: this.state.basecolor},
+                        {name: getClickAPText(aps[7].mac), shape: "circle", coords: [1566,235,15], preFillColor: "rgba(0,0,250,1)"},
+                        {name: getClickAPText(aps[8].mac), shape: "circle", coords: [366,774,15], preFillColor: "rgba(0,0,250,1)"},
+                        {name: getClickAPText(aps[9].mac), shape: "circle", coords: [539,818,15], preFillColor: "rgba(0,0,250,1)"},
+                        {name: getClickAPText(aps[10].mac), shape: "circle", coords: [912,804,15], preFillColor: "rgba(0,0,250,1)"},
 
                         // areas
                         {name: "4.1.04 - 9", shape: "rect", coords: [435,687,770,958], preFillColor: getColorFromNumDevices( getNumDevicesOfAP(aps[5].mac) )}, // 4.1.18
@@ -237,11 +245,11 @@ export class DepartmentGeneric extends React.Component{
                     name: "mapadetipiso2",
                     areas: [
                         // APs
-                        {name: getClickAPText("sala de redes"), shape: "circle", coords: [955,774,15], preFillColor: "rgba(0,0,250,1)"},
-                        {name: getClickAPText("area de salas"), shape: "circle", coords: [644,817,15], preFillColor: "rgba(0,0,250,1)"},
-                        {name: getClickAPText("area do canto"), shape: "circle", coords: [292,774,15], preFillColor: "rgba(0,0,250,1)"},
-                        {name: getClickAPText("area de gabinetes"), shape: "circle", coords: [1415,248,15], preFillColor: "rgba(0,0,250,1)"},
-                        {name: getClickAPText("area de gabinetes com sala"), shape: "circle", coords: [982,268,15], preFillColor: "rgba(0,0,250,1)"},
+                        {name: getClickAPText(aps[0].mac), shape: "circle", coords: [955,774,15], preFillColor: "rgba(0,0,250,1)"},
+                        {name: getClickAPText(aps[1].mac), shape: "circle", coords: [644,817,15], preFillColor: "rgba(0,0,250,1)"},
+                        {name: getClickAPText(aps[2].mac), shape: "circle", coords: [292,774,15], preFillColor: "rgba(0,0,250,1)"},
+                        {name: getClickAPText(aps[3].mac), shape: "circle", coords: [1415,248,15], preFillColor: "rgba(0,0,250,1)"},
+                        {name: getClickAPText(aps[4].mac), shape: "circle", coords: [982,268,15], preFillColor: "rgba(0,0,250,1)"},
 
 
                         // area de gabinetes
@@ -264,10 +272,10 @@ export class DepartmentGeneric extends React.Component{
                     name: "mapadetipiso3",
                     areas: [
                         // APs
-                        {name: getClickAPText("area de SE"), shape: "circle", coords: [955,774,15], preFillColor: "rgba(0,0,250,1)"},
-                        {name: getClickAPText("area de salinhas"), shape: "circle", coords: [417,773,15], preFillColor: "rgba(0,0,250,1)"},
-                        {name: getClickAPText("area de gabinetes3"), shape: "circle", coords: [1414,249,15], preFillColor: "rgba(0,0,250,1)"},
-                        {name: getClickAPText("area de gabinetes com sala3"), shape: "circle", coords: [1037,292,15], preFillColor: "rgba(0,0,250,1)"},
+                        {name: getClickAPText(aps[11].mac), shape: "circle", coords: [955,774,15], preFillColor: "rgba(0,0,250,1)"},
+                        {name: getClickAPText(aps[12].mac), shape: "circle", coords: [417,773,15], preFillColor: "rgba(0,0,250,1)"},
+                        {name: getClickAPText(aps[13].mac), shape: "circle", coords: [1414,249,15], preFillColor: "rgba(0,0,250,1)"},
+                        {name: getClickAPText(aps[13].mac), shape: "circle", coords: [1037,292,15], preFillColor: "rgba(0,0,250,1)"},
 
 
                         // area de SE
