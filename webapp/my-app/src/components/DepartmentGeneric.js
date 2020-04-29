@@ -25,9 +25,9 @@ var aps = [
    {"mac":"f1a971b93458","numDevices":0}
 ]
 
-for (var ap in aps){
-    fetch('/numDevicesAP?AP='+ap.mac).then(response => response.json())
-        .then(data => ap.numDevices=data.numDevices)
+for (let ap of aps){
+    fetch('http://192.168.160.81:8088/numDevicesAP?AP='+ap.mac).then(response => response.json())
+        .then(data => ap.numDevices=data.numDevices[0])
     console.log()
 }
 console.log(aps)
@@ -60,7 +60,7 @@ function currentSlide(n) {
 
 // obtem numero de devices atraves do AP dado ( a substituir pela função da API )
 function getNumDevicesOfAP(AP) {
-    for (var ap in aps)
+    for (let ap of aps)
         if(AP == ap.mac)
             return ap.numDevices
     return 11

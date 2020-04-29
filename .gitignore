@@ -3,3 +3,5 @@ venv/
 .idea/
 __pycache__/
 node_modules/
+webapp/my-app/node_modules/
+webapp/my-app/node_modules/*

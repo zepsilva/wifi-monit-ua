@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 var numDevices = null;
-fetch('/numDevicesAP?AP=c75d6733a5d5').then(response => response.json())
+fetch('http://192.168.160.81:8088/numDevicesAP?AP=c75d6733a5d5').then(response => response.json())
         .then(data => numDevices=data.numDevices)
 
 //<Button color="inherit"> <Link to="/myconnection" style={{textDecoration: 'inherit', color: 'white'}}> My Connection </Link> </Button> 
