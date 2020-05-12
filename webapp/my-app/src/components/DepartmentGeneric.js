@@ -8,29 +8,6 @@ import { Slider, Typography } from '@material-ui/core';
 var slideIndex = 1;
 var abc;
 var testdynamicvalues = 0
-var aps = [
-   {"mac":"286e13139c47","numDevices":0},
-   {"mac":"4088b2c69a01","numDevices":0},
-   {"mac":"811fe17e3578","numDevices":0},
-   {"mac":"94ed25975fca","numDevices":0},
-   {"mac":"c18302689d96","numDevices":0},
-   {"mac":"2dbd89cae8a0","numDevices":0},
-   {"mac":"c75d6733a5d5","numDevices":0},
-   {"mac":"f605e3a05ec3","numDevices":0},
-   {"mac":"76a369c7358b","numDevices":0},
-   {"mac":"a6aed4251b46","numDevices":0},
-   {"mac":"c26803b91441","numDevices":0},
-   {"mac":"c6959257b146","numDevices":0},
-   {"mac":"cfd7097acd66","numDevices":0},
-   {"mac":"f1a971b93458","numDevices":0}
-]
-
-for (let ap of aps){
-    fetch('http://192.168.160.81:8088/numDevicesAP?AP='+ap.mac).then(response => response.json())
-        .then(data => ap.numDevices=data.numDevices[0])
-    console.log()
-}
-console.log(aps)
 
 function showSlides(n) {
     var i;
@@ -59,7 +36,7 @@ function currentSlide(n) {
 }
 
 // obtem numero de devices atraves do AP dado ( a substituir pela função da API )
-function getNumDevicesOfAP(AP) {
+/*function getNumDevicesOfAP(AP) {
     for (let ap of aps)
         if(AP == ap.mac)
             return ap.numDevices
@@ -115,8 +92,8 @@ function getNumDevicesOfAP(AP) {
 
     return numDevices;
 
-     */
-}
+     
+}*/
 
 
 // escalas de cores dependendo do numero de devices ligados
@@ -134,10 +111,10 @@ function getColorFromNumDevices(numDevices){
         return "rgba(150,100,200,0.6)"; //roxo
     }
 }
-
+/*
 function getClickAPText(AP) {
     return "AP: " + AP + ", Number of connected devices: " + getNumDevicesOfAP(AP);
-}
+}*/
 
 function handleClick(e){
     //console.log(e.name);
@@ -157,15 +134,8 @@ function handleHoverOFF(e){
     this.setState({string : "Piso "+ slideIndex});
 }
 
-const maxHourValue = 12;
+const maxHourValue = 24;
 
-const handleChange = (event, newValue) => {
-    const currentTime = new Date();
-    const newHour = currentTime.getHours() + newValue - maxHourValue;
-    currentTime.setHours(newHour);
-    const current = currentTime.getTime();
-    console.log(currentTime);
-  };
 function f(data) {
     console.log(data)
     testdynamicvalues = data.numDevices
@@ -173,23 +143,151 @@ function f(data) {
 
 }
 export class DepartmentGeneric extends React.Component{
-
+ 
 
     constructor(props) {
         super(props);
+        const time_now = new Date();
+
+        const dates_back = [];
+        var i;
+        for(i = 0; i <= 7; i++) {
+            time_now.setDate(new Date().getDate() - i);
+            dates_back[i] = time_now.getDate();
+        }
+        
         this.state = {string : "Piso "+ slideIndex,
                     basecolor : "rgba(0,0,250,1)",
-                    baseraio : 15
+                    baseraio : 15,
+		            aps: [
+                        {"mac":"286e13139c47","numDevices":0},// 0
+                        {"mac":"4088b2c69a01","numDevices":0},// 1
+                        {"mac":"811fe17e3578","numDevices":0},// 2
+                        {"mac":"94ed25975fca","numDevices":0},// 3
+                        {"mac":"c18302689d96","numDevices":0},// 4
+                        {"mac":"2dbd89cae8a0","numDevices":0},// 5
+                        {"mac":"c75d6733a5d5","numDevices":0},// 6
+                        {"mac":"f605e3a05ec3","numDevices":0},// 7
+                        {"mac":"76a369c7358b","numDevices":0},// 8
+                        {"mac":"a6aed4251b46","numDevices":0},// 9
+                        {"mac":"c26803b91441","numDevices":0},// 10
+                        {"mac":"c6959257b146","numDevices":0},// 11
+                        {"mac":"cfd7097acd66","numDevices":0},// 12
+                        {"mac":"f1a971b93458","numDevices":0},// 13
+                    ],
+                    selectHour: time_now,
+                    selSlider: false,
+                    marks: [
+                        {
+                          value: dates_back[7],
+                          label: dates_back[7],
+                        },
+                        {
+                          value: dates_back[6],
+                          label: dates_back[6],
+                        },
+                        {
+                          value: dates_back[5],
+                          label: dates_back[5],
+                        },
+                        {
+                          value: dates_back[4],
+                          label: dates_back[4],
+                        },
+                        {
+                          value: dates_back[3],
+                          label: dates_back[3],
+                        },
+                        {
+                          value: dates_back[2],
+                          label: dates_back[2],
+                        },
+                        {
+                          value: dates_back[1],
+                          label: dates_back[1],
+                        },
+                        {
+                          value: dates_back[0],
+                          label: dates_back[0],
+                        },
+                      ],
+                    dates_back: dates_back
     };
     }
 
-    componentDidMount(){
+
+    async componentDidMount(){
         showSlides(slideIndex);
+	var i;
+	for (i = 0; i < this.state.aps.length; i++ ){
+	    let new_state = Object.assign({}, this.state); 
+	    let a = new_state.aps;
+    	    await fetch('http://192.168.160.81:8088/numDevicesAP?AP='+this.state.aps[i].mac).then(response => response.json())
+		.then(data => {a[i].numDevices = data.numDevices;
+				console.log(data);
+			      this.setState({aps: a})})
+	}
+
+	console.log(this.state.aps);
 
     }
+
+    handleChangeHour = async (event, newValue) => {
+    	var currentTime
+        var newHour
+
+        if(this.state.selSlider) {
+          this.state.selectHour.setHours(0,0,0,0);
+          currentTime = this.state.selectHour;
+          newHour = newValue;
+        } else {
+          currentTime = new Date();
+          newHour = currentTime.getHours() + newValue - maxHourValue;
+        }
+        currentTime.setHours(newHour);
+        this.setState({selectHour: currentTime});
+        const current = currentTime.getTime();
+        var i;
+    	for (i = 0; i < this.state.aps.length; i++){
+    	    let new_state = Object.assign({}, this.state);
+            let a = new_state.aps;
+	    await fetch('http://192.168.160.81:8088/numDevicesAPTime?AP='+this.state.aps[i].mac+'&Time='+current/1000).then(response => response.json())
+        	.then(data => {a[i].numDevices = data.numDevices;
+				console.log(data);
+                              this.setState({aps: a})})
+    	}
+        console.log(this.state.aps)
+	    console.log(currentTime);
+    };
+
+    handleChangeDay = (event, newValue) => {
+        if(newValue === this.state.dates_back[0])
+            this.setState({selSlider: false});
+        else
+            this.setState({selSlider: true});
+        const currentDay = new Date();
+        currentDay.setDate(newValue);
+        currentDay.setHours(0,0,0,0);
+        this.setState({selectHour: currentDay});
+        console.log(currentDay);
+        console.log("handleChangeDay");
+      }
+
+    getNumDevicesOfAP(AP) {
+	var i;
+    	for (i = 0; i < this.state.aps.length; i++)
+            if(AP == this.state.aps[i].mac)
+            	return this.state.aps[i].numDevices;
+   	return 11;
+    }
+    
+    getClickAPText(AP) {
+    	return "AP: " + AP + ", Number of connected devices: " + this.getNumDevicesOfAP(AP);
+    }
+
     render() {
 
-        console.log("123"+abc)
+        console.log("render INI")
 
         var imagempiso1 = "./logo512.png";
         var imagempiso2 = "./logo512.png";
@@ -219,25 +317,25 @@ export class DepartmentGeneric extends React.Component{
                     name: "mapadetipiso1",
                     areas: [
                         // APs
-                        {name: getClickAPText(aps[5].mac), shape: "circle", coords: [944,237,15], preFillColor: "rgba(0,0,250,1)"},
-                        {name: getClickAPText(aps[6].mac), shape: "circle", coords: [1360,235,this.state.baseraio], preFillColor: this.state.basecolor},
-                        {name: getClickAPText(aps[7].mac), shape: "circle", coords: [1566,235,15], preFillColor: "rgba(0,0,250,1)"},
-                        {name: getClickAPText(aps[8].mac), shape: "circle", coords: [366,774,15], preFillColor: "rgba(0,0,250,1)"},
-                        {name: getClickAPText(aps[9].mac), shape: "circle", coords: [539,818,15], preFillColor: "rgba(0,0,250,1)"},
-                        {name: getClickAPText(aps[10].mac), shape: "circle", coords: [912,804,15], preFillColor: "rgba(0,0,250,1)"},
+                        {name: this.getClickAPText(this.state.aps[5].mac), shape: "circle", coords: [944,237,15], preFillColor: "rgba(0,0,250,1)"},
+                        {name: this.getClickAPText(this.state.aps[6].mac), shape: "circle", coords: [1360,235,this.state.baseraio], preFillColor: this.state.basecolor},
+                        {name: this.getClickAPText(this.state.aps[7].mac), shape: "circle", coords: [1566,235,15], preFillColor: "rgba(0,0,250,1)"},
+                        {name: this.getClickAPText(this.state.aps[8].mac), shape: "circle", coords: [366,774,15], preFillColor: "rgba(0,0,250,1)"},
+                        {name: this.getClickAPText(this.state.aps[9].mac), shape: "circle", coords: [539,818,15], preFillColor: "rgba(0,0,250,1)"},
+                        {name: this.getClickAPText(this.state.aps[10].mac), shape: "circle", coords: [912,804,15], preFillColor: "rgba(0,0,250,1)"},
 
                         // areas
-                        {name: "4.1.04 - 9", shape: "rect", coords: [435,687,770,958], preFillColor: getColorFromNumDevices( getNumDevicesOfAP(aps[5].mac) )}, // 4.1.18
+                        {name: "4.1.04 - 9", shape: "rect", coords: [435,687,770,958], preFillColor: getColorFromNumDevices( this.getNumDevicesOfAP(this.state.aps[9].mac) )}, // 4.1.18
 
-                        {name: "4.1.01 - 3", shape: "rect", coords: [209,687,432,958], preFillColor: getColorFromNumDevices( getNumDevicesOfAP(aps[6].mac) )}, // anfiteatro
+                        {name: "4.1.01 - 3", shape: "rect", coords: [209,687,432,958], preFillColor: getColorFromNumDevices( this.getNumDevicesOfAP(this.state.aps[8].mac) )}, // anfiteatro
 
-                        {name: "4.1.11 - 17", shape: "poly", coords: [993,559, 773,559, 773,958, 1105,957, 1105,688, 993,688], preFillColor: getColorFromNumDevices( getNumDevicesOfAP(aps[7].mac) )}, // area de redes
+                        {name: "4.1.11 - 17", shape: "poly", coords: [993,559, 773,559, 773,958, 1105,957, 1105,688, 993,688], preFillColor: getColorFromNumDevices( this.getNumDevicesOfAP(this.state.aps[10].mac) )}, // area de redes
 
-                        {name: "4.1.28 - 32", shape: "rect", coords: [1477,96,1702,366], preFillColor: getColorFromNumDevices( getNumDevicesOfAP(aps[8].mac) )}, // nucleos
+                        {name: "4.1.28 - 32", shape: "rect", coords: [1477,96,1702,366], preFillColor: getColorFromNumDevices( this.getNumDevicesOfAP(this.state.aps[7].mac) )}, // nucleos
 
-                        {name: "4.1.23 - 27, 4.1.34", shape: "rect", coords: [1163,96,1476,366], preFillColor: getColorFromNumDevices( getNumDevicesOfAP(aps[9].mac) )},
+                        {name: "4.1.23 - 27, 4.1.34", shape: "rect", coords: [1163,96,1476,366], preFillColor: getColorFromNumDevices( this.getNumDevicesOfAP(this.state.aps[6].mac) )},
 
-                        {name: "4.1.18 - 20, 4.1.36", shape: "poly", coords: [804,364, 928,364, 928,492, 1105,492, 1105,372, 1159,372, 1159,96, 801,96], preFillColor: getColorFromNumDevices( getNumDevicesOfAP(aps[10].mac) )}, // 4.1.18
+                        {name: "4.1.18 - 20, 4.1.36", shape: "poly", coords: [804,364, 928,364, 928,492, 1105,492, 1105,372, 1159,372, 1159,96, 801,96], preFillColor: getColorFromNumDevices( this.getNumDevicesOfAP(this.state.aps[5].mac) )}, // 4.1.18
 
                     ]
                 };
@@ -245,50 +343,50 @@ export class DepartmentGeneric extends React.Component{
                     name: "mapadetipiso2",
                     areas: [
                         // APs
-                        {name: getClickAPText(aps[0].mac), shape: "circle", coords: [955,774,15], preFillColor: "rgba(0,0,250,1)"},
-                        {name: getClickAPText(aps[1].mac), shape: "circle", coords: [644,817,15], preFillColor: "rgba(0,0,250,1)"},
-                        {name: getClickAPText(aps[2].mac), shape: "circle", coords: [292,774,15], preFillColor: "rgba(0,0,250,1)"},
-                        {name: getClickAPText(aps[3].mac), shape: "circle", coords: [1415,248,15], preFillColor: "rgba(0,0,250,1)"},
-                        {name: getClickAPText(aps[4].mac), shape: "circle", coords: [982,268,15], preFillColor: "rgba(0,0,250,1)"},
+                        {name: this.getClickAPText(this.state.aps[0].mac), shape: "circle", coords: [955,774,15], preFillColor: "rgba(0,0,250,1)"},
+                        {name: this.getClickAPText(this.state.aps[1].mac), shape: "circle", coords: [644,817,15], preFillColor: "rgba(0,0,250,1)"},
+                        {name: this.getClickAPText(this.state.aps[2].mac), shape: "circle", coords: [292,774,15], preFillColor: "rgba(0,0,250,1)"},
+                        {name: this.getClickAPText(this.state.aps[3].mac), shape: "circle", coords: [1415,248,15], preFillColor: "rgba(0,0,250,1)"},
+                        {name: this.getClickAPText(this.state.aps[4].mac), shape: "circle", coords: [982,268,15], preFillColor: "rgba(0,0,250,1)"},
 
 
                         // area de gabinetes
-                        {name: "4.2.32 - 46", shape: "rect", coords: [1137,96,1702,366], preFillColor: getColorFromNumDevices( getNumDevicesOfAP(aps[0].mac) )}, // 4.1.18
+                        {name: "4.2.32 - 46", shape: "rect", coords: [1137,96,1702,366], preFillColor: getColorFromNumDevices( this.getNumDevicesOfAP(this.state.aps[3].mac) )}, // 4.1.18
 
                         // area de gabinetes com sala
-                        {name: "4.2.23 - 31", shape: "poly", coords: [804,364, 914,364, 915,492, 1138,492, 1138,96, 801,96], preFillColor: getColorFromNumDevices( getNumDevicesOfAP(aps[1].mac) )}, // 4.1.18
+                        {name: "4.2.23 - 31", shape: "poly", coords: [804,364, 914,364, 915,492, 1138,492, 1138,96, 801,96], preFillColor: getColorFromNumDevices( this.getNumDevicesOfAP(this.state.aps[4].mac) )}, // 4.1.18
 
                         // area de salas
-                        {name: "4.2.08 - 14", shape: "rect", coords: [435,687,768,958], preFillColor: getColorFromNumDevices( getNumDevicesOfAP(aps[2].mac) )}, // 4.1.18
+                        {name: "4.2.08 - 14", shape: "rect", coords: [435,687,768,958], preFillColor: getColorFromNumDevices( this.getNumDevicesOfAP(this.state.aps[1].mac) )}, // 4.1.18
 
                         // area do canto
-                        {name: "4.2.01 - 7", shape: "rect", coords: [209,687,432,958], preFillColor: getColorFromNumDevices( getNumDevicesOfAP(aps[3].mac) )}, // 4.1.18
+                        {name: "4.2.01 - 7", shape: "rect", coords: [209,687,432,958], preFillColor: getColorFromNumDevices( this.getNumDevicesOfAP(this.state.aps[2].mac) )}, // 4.1.18
 
                         // area de redes
-                        {name: "4.2.15 - 22", shape: "poly", coords: [993,559, 773,559, 773,958, 1105,957, 1105,688, 993,688], preFillColor: getColorFromNumDevices( getNumDevicesOfAP(aps[4].mac) )}, // area de redes
+                        {name: "4.2.15 - 22", shape: "poly", coords: [993,559, 773,559, 773,958, 1105,957, 1105,688, 993,688], preFillColor: getColorFromNumDevices( this.getNumDevicesOfAP(this.state.aps[0].mac) )}, // area de redes
                     ]
                 };
                 MAP3 = {
                     name: "mapadetipiso3",
                     areas: [
                         // APs
-                        {name: getClickAPText(aps[11].mac), shape: "circle", coords: [955,774,15], preFillColor: "rgba(0,0,250,1)"},
-                        {name: getClickAPText(aps[12].mac), shape: "circle", coords: [417,773,15], preFillColor: "rgba(0,0,250,1)"},
-                        {name: getClickAPText(aps[13].mac), shape: "circle", coords: [1414,249,15], preFillColor: "rgba(0,0,250,1)"},
-                        {name: getClickAPText(aps[13].mac), shape: "circle", coords: [1037,292,15], preFillColor: "rgba(0,0,250,1)"},
+                        {name: this.getClickAPText(this.state.aps[11].mac), shape: "circle", coords: [955,774,15], preFillColor: "rgba(0,0,250,1)"},
+                        {name: this.getClickAPText(this.state.aps[12].mac), shape: "circle", coords: [417,773,15], preFillColor: "rgba(0,0,250,1)"},
+                        {name: this.getClickAPText(this.state.aps[13].mac), shape: "circle", coords: [1414,249,15], preFillColor: "rgba(0,0,250,1)"},
+                        {name: this.getClickAPText(this.state.aps[13].mac), shape: "circle", coords: [1037,292,15], preFillColor: "rgba(0,0,250,1)"},
 
 
                         // area de SE
-                        {name: "4.3.15 - 24", shape: "poly", coords: [993,559, 994,687, 1104,688, 1104,958, 660,958, 660,769, 654,769, 654,687, 773,687, 773,559], preFillColor: getColorFromNumDevices( getNumDevicesOfAP(aps[11].mac) )}, // 4.1.18
+                        {name: "4.3.15 - 24", shape: "poly", coords: [993,559, 994,687, 1104,688, 1104,958, 660,958, 660,769, 654,769, 654,687, 773,687, 773,559], preFillColor: getColorFromNumDevices( this.getNumDevicesOfAP(this.state.aps[11].mac) )}, // 4.1.18
 
                         // area de salinhas
-                        {name: "4.3.01 - 17", shape: "rect", coords: [208,687,659,958], preFillColor: getColorFromNumDevices( getNumDevicesOfAP(aps[12].mac) )}, // 4.1.18
+                        {name: "4.3.01 - 17", shape: "rect", coords: [208,687,659,958], preFillColor: getColorFromNumDevices( this.getNumDevicesOfAP(this.state.aps[12].mac) )}, // 4.1.18
 
                         // area de gabinetes3
-                        {name: "4.3.33 - 47", shape: "rect", coords: [1164,94,1702,365], preFillColor: getColorFromNumDevices( getNumDevicesOfAP(aps[13].mac) )}, // 4.1.18
+                        {name: "4.3.33 - 47", shape: "rect", coords: [1164,94,1702,365], preFillColor: getColorFromNumDevices( this.getNumDevicesOfAP(this.state.aps[13].mac) )}, // 4.1.18
 
                         // area de gabinetes com sala 3
-                        {name: "4.3.25 - 32", shape: "poly", coords: [914,492, 1136,492, 1136,365, 1161,365, 1161,94, 801,94, 801,365, 914,365], preFillColor: getColorFromNumDevices( getNumDevicesOfAP(aps[13].mac) )}, // 4.1.18
+                        {name: "4.3.25 - 32", shape: "poly", coords: [914,492, 1136,492, 1136,365, 1161,365, 1161,94, 801,94, 801,365, 914,365], preFillColor: getColorFromNumDevices( this.getNumDevicesOfAP(this.state.aps[13].mac) )}, // 4.1.18
 
                     ]
                 };
@@ -297,7 +395,7 @@ export class DepartmentGeneric extends React.Component{
                 imagempiso1 = "./images/dep11_p1.png";
                 imagempiso2 = "./images/dep11_p2.png";
                 imagempiso3 = "./images/dep11_p3.png";
-                MAP1 = {
+                /*MAP1 = {
                     name: "mapadmatpiso1",
                     areas: [
                         // APs
@@ -368,7 +466,7 @@ export class DepartmentGeneric extends React.Component{
                         {name: "11.3.31 - 41 salas", shape: "rect", coords: [1029,688,1369,929], preFillColor: getColorFromNumDevices( getNumDevicesOfAP("area botright2") )}, // botright
 
                     ]
-                };
+                };*/
                 break;
             default:
 
@@ -427,22 +525,48 @@ export class DepartmentGeneric extends React.Component{
                     <span className="dot" onClick={() => currentSlide(3)}></span>
                 </div>
 
-                <div className="slider" style={{position:'absolute', right: 20, bottom: 30, width: 250, height: 75, background: '#fff', padding: 12, 'border-radius': 25}}>
-                    <Typography id="discrete-slider" gutterBottom>
-                        Tempo
+                <div className="slider" style={{position:'absolute', right: 20, bottom: 40, width: 300, height: 180, background: '#fff', padding: 12, 'border-radius': 25, 'border-style': 'solid'}}>
+                    <Typography id="discrete-slider-restrict" gutterBottom>
+                      Dia - { this.state.selectHour.toLocaleDateString() }
                     </Typography>
                     <Slider
-                        defaultValue={12}
+                      defaultValue={this.state.dates_back[0]}
+                      aria-labelledby="discrete-slider-restrict"
+                      step={null}
+                      marks={this.state.marks}
+                      track='inverted'
+                      min={this.state.dates_back[7]}
+                      max={this.state.dates_back[0]}
+                      onChange={this.handleChangeDay}
+                    />
+                    
+                    <Typography id="discrete-slider" gutterBottom>
+                        Tempo - { this.state.selectHour.getMinutes() < 10 ? this.state.selectHour.getHours() + ':'+ '0'+ this.state.selectHour.getMinutes() : this.state.selectHour.getHours() + ':'+ this.state.selectHour.getMinutes() }
+                    </Typography>
+                    { this.state.selSlider ? (
+                    <Slider
+                        defaultValue={0}
                         aria-labelledby="discrete-slider"
                         valueLabelDisplay="auto"
                         step={1}
                         marks={true}
                         min={0}
                         max={maxHourValue}
-                        scale={(x) => -(maxHourValue - x)}        // the scale is dependent on the maximum value
+                        onChange={this.handleChangeHour}
+                        />
+                    ) : (
+                    <Slider
+                        defaultValue={maxHourValue}
+                        aria-labelledby="discrete-slider"
+                        valueLabelDisplay="auto"
+                        step={1}
+                        marks={true}
+                        min={0}
+                        max={maxHourValue}
+                        scale={(x) => -(maxHourValue - x)}     
                         track='inverted'
-                        onChange={handleChange}
-                    />
+                        onChange={this.handleChangeHour}
+                    /> )}
                 </div>
 
             </div>
