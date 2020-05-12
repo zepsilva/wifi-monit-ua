@@ -28,6 +28,42 @@ def numDevicesperAPmacTime():
     return ap_info_json
 
 
+@app.route('/numDevicesBuilding', methods=['GET'])
+def numDevicesPerBuilding():
+    building = request.args['Building']
+    info = getDevicesInBuilding(building)
+    bjson = {'numDevices':str(info)}
+    bjson = json.dumps(bjson)
+    return bjson
+
+@app.route('/numDevicesBuildingTime', methods=['GET'])
+def numDevicesPerBuildingTime():
+    building = request.args['Building']
+    time = float(request.args['Time'])
+    info = getDevicesInBuilding(building, time)
+    bjson = {'numDevices':str(info)}
+    bjson = json.dumps(bjson)
+    return bjson
+
+@app.route('/numDevicesBlock', methods=['GET'])
+def numDevicesPerBlock():
+    building = request.args['Building']
+    block = request.args['Block']
+    info = getDevicesInBuilding(block, building)
+    bjson = {'numDevices':str(info)}
+    bjson = json.dumps(bjson)
+    return bjson
+
+@app.route('/numDevicesBlockTime', methods=['GET'])
+def numDevicesPerBlockTime():
+    building = request.args['Building']
+    block = request.args['Block']
+    time = float(request.args['Time'])
+    info = getDevicesInBuilding(block, building, time)
+    bjson = {'numDevices':str(info)}
+    bjson = json.dumps(bjson)
+    return bjson
+
 
 @app.route('/APbyfloor', methods=['GET'])
 def APbyfloor():
