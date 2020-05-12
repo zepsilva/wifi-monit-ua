@@ -1,5 +1,6 @@
 import MySQLdb
 import time
+import json
 from datetime import datetime
 
 def getAPSbyFloor(building, block, floor):
@@ -20,7 +21,7 @@ def getInfoByAp(APmac, time=time.time()):
     c.execute("select * from APinfo where APmac = %s and APTimeStamp < %s and APTimeStamp > %s",[APmac, upertime, lowertime])
     
     entrys = c.fetchall()
-    [print(entry) for entry in entrys]
+
     if len(entrys) == 0:
         return None
 
@@ -32,7 +33,8 @@ def getInfoByAp(APmac, time=time.time()):
         if abs(entryTime - time) < closestTime:
             closest = entry
             closestTime = abs(entryTime - time)
-
+            
+    dict1 = {"numDevices": closest[2]}
     return closest[2]
 
 #print(getAPSbyFloor("ed1", "pav1", "Piso 1"))

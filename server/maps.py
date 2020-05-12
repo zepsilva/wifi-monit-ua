@@ -139,7 +139,7 @@ def updateBD():
                                  random.randint(0, 255),
                                  random.randint(0, 255),
                                  random.randint(0, 255),
-                                 random.randint(0, 255)),
+                                 random.randint(0, 255)).replace(":", ""),
                               b.id,
                               block.name,
                               floor.name,

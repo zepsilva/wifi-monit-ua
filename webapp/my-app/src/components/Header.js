@@ -36,6 +36,12 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
+var numDevices = null;
+fetch('http://192.168.160.81:8088/numDevicesAP?AP=c75d6733a5d5').then(response => response.json())
+        .then(data => numDevices=data.numDevices)
+
+//<Button color="inherit"> <Link to="/myconnection" style={{textDecoration: 'inherit', color: 'white'}}> My Connection </Link> </Button> 
+
 export default function ButtonAppBar() {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
@@ -54,7 +60,6 @@ export default function ButtonAppBar() {
           <Typography variant="h6" className={classes.title}>
           <Link to="/" style={{textDecoration: 'inherit', color: 'white'}}> WiFi-monitUA </Link>
           </Typography>
-          <Button color="inherit"> <Link to="/myconnection" style={{textDecoration: 'inherit', color: 'white'}}> My Connection </Link> </Button> 
         </Toolbar>
       </AppBar>
       <Drawer
@@ -66,12 +71,16 @@ export default function ButtonAppBar() {
         }}
       >
         <div className={classes.drawerContainer}>
-            <h2> Você está conectado ao AP: null </h2>
-            <ul>
-                {["teste1", "teste2", "teste3", "teste4"].map((user,idx) => {
-                    return <li key={idx}>{user}</li>
-                })}
-            </ul>
+            <h4> Você está conectado ao AP: </h4>
+            <h4> DETI - PISO 1 - c75d6733a5d5 </h4>
+            <ul><li>Numero de pessoas conectadas: {numDevices}</li></ul>
+            <Button variant="contained" color="primary"> <Link to={{
+                        pathname:'/department',
+                        state:{
+                            depNum: 4,
+                            myConnectionButton: 1
+                        }
+                    }} style={{textDecoration: 'inherit', color: 'white'}}> LOCALIZAÇÃO DO AP </Link> </Button> 
         </div>
       </Drawer>
     </div>

@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@material-ui/core": "^4.9.11",
+    "@material-ui/core": "^4.9.12",
     "@material-ui/icons": "^4.9.1",
     "@material-ui/styles": "^4.9.6",
     "react": "^16.13.1",
@@ -11,12 +11,13 @@
     "react-image-mapper": "0.0.15",
     "react-map-gl": "^5.2.3",
     "react-router-dom": "^5.1.2",
-    "react-scripts": "^3.4.1"
+    "react-scripts": "^3.4.1",
+    "yarn": "^1.22.4"
   },
   "devDependencies": {},
   "scripts": {
     "start": "react-scripts start",
-    "start-api": "cd ../../server && venv/bin/flask run --no-debugger",
+    "start-api": "cd ../../server && venv/bin/flask run -h 192.168.160.81 -p 8088 --no-debugger",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "test-api": "cd ../../server && venv/bin/flask test",

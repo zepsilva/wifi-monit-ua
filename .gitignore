@@ -2,4 +2,6 @@ venv/
 .env.local
 .idea/
 __pycache__/
-.gitignore
+node_modules/
+webapp/my-app/node_modules/
+webapp/my-app/node_modules/*
