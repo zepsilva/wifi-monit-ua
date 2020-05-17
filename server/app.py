@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, jsonify
 import flask_cors
 from querys import *
 import json
@@ -68,6 +68,10 @@ def numDevicesPerBlockTime():
 @app.route('/APbyfloor', methods=['GET'])
 def APbyfloor():
     return
+
+@app.route("/get_client_ip", methods=['GET'])
+def get_client_ip():
+    return jsonify({'ip': request.remote_addr}), 200
 
 
 if __name__ == '__main__':

@@ -40,6 +40,10 @@ var numDevices = null;
 fetch('http://192.168.160.81:8088/numDevicesAP?AP=c75d6733a5d5').then(response => response.json())
         .then(data => numDevices=data.numDevices)
 
+var client_ip = null;
+fetch('http://192.168.160.81:8088/get_client_ip').then(response => response.json())
+        .then(data => client_ip=data.ip)
+
 //<Button color="inherit"> <Link to="/myconnection" style={{textDecoration: 'inherit', color: 'white'}}> My Connection </Link> </Button> 
 
 export default function ButtonAppBar() {
@@ -71,6 +75,7 @@ export default function ButtonAppBar() {
         }}
       >
         <div className={classes.drawerContainer}>
+	    <h4> IP address: {client_ip} </h4>
             <h4> Você está conectado ao AP: </h4>
             <h4> DETI - PISO 1 - c75d6733a5d5 </h4>
             <ul><li>Numero de pessoas conectadas: {numDevices}</li></ul>
