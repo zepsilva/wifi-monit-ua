@@ -30,7 +30,7 @@ When you want to leave the virtualenv just type
 deactivate
 ```
 
-## Run API
+## Run
 
 Go to Module directory:
 ```bash
