@@ -1,18 +1,5 @@
 #!/usr/bin/env python3
 
-# How to run server
-# nohup /home/oneadmin/wifi-monit-ua/CiscoPrimeSubstitute/CPS.py &
-
-# HTTP GET COMMANDS
-# curl http://127.0.0.1:5000/webacs/api/v1/data/AccessPoints
-# curl http://127.0.0.1:5000/webacs/api/v1/data/Clients
-# curl http://127.0.0.1:5000/webacs/api/v1/data/ClientSessions
-# curl http://127.0.0.1:5000/webacs/api/v1/data/ClientSessions/<search_term>
-
-# How to stop server
-# pkill -f CPS.py
-
-
 from flask import Flask
 from flask_restful import abort, Api, Resource
 from resources import *
