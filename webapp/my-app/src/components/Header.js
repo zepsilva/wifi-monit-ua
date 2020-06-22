@@ -77,7 +77,7 @@ export default function ButtonAppBar() {
         <div className={classes.drawerContainer}>
 	    <h4> IP address: {client_ip} </h4>
             <h4> Você está conectado ao AP: </h4>
-            <h4> DETI - PISO 1 - c75d6733a5d5 </h4>
+            <h4> DETI - PISO 1 </h4>
             <ul><li>Numero de pessoas conectadas: {numDevices}</li></ul>
             <Button variant="contained" color="primary"> <Link to={{
                         pathname:'/department',

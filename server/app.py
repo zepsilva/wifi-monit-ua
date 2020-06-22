@@ -3,6 +3,8 @@ import flask_cors
 from querys import *
 import json
 import sys
+import time
+from stats import *
 
 app = Flask(__name__)
 cors = flask_cors.CORS(app)
@@ -13,28 +15,58 @@ def teste():
 @app.route('/numDevicesAP', methods=['GET'])
 def numDevicesperAPmac():
     AP=request.args['AP']
-    ap_info=getInfoByAp(AP)
+    ap_info=getDevicesByAp(AP)
     ap_info_json={'numDevices':str(ap_info)}
     ap_info_json=json.dumps(ap_info_json)
     return ap_info_json
 
-@app.route('/numDevicesAPTime', methods=['GET'])
+
+@app.route('/infoAP', methods=['GET'])
 def numDevicesperAPmacTime():
     AP=request.args['AP']
-    time = float(request.args['Time'])
-    ap_info=getInfoByAp(AP,time)
-    ap_info_json={'numDevices':str(ap_info)}
+    t = time.time()
+    try:
+        t = float(request.args['Time'])
+    except:
+        pass
+    numDevices = getDevicesByAp(AP,t)
+    numUsers = getDevicesByAp(AP, t, True)
+    ap_info_json={'numDevices':str(numDevices), 'numUsers':str(numUsers)}
     ap_info_json=json.dumps(ap_info_json)
     return ap_info_json
 
 
-@app.route('/numDevicesBuilding', methods=['GET'])
+@app.route('/infoBuilding', methods=['GET'])
 def numDevicesPerBuilding():
     building = request.args['Building']
-    info = getDevicesInBuilding(building)
-    bjson = {'numDevices':str(info)}
+    t = time.time()
+    try:
+        t = float(request.args['Time'])
+    except:
+        pass
+    numDevices = getDevicesInBuilding(building, t)
+    numUsers = getUsersInBuilding(building,t)
+    bjson={'numDevices':str(numDevices), 'numUsers':str(numUsers)}
+
     bjson = json.dumps(bjson)
     return bjson
+
+@app.route('/infoFloor', methods=['GET'])
+def infoFloor():
+    building = request.args['Building']
+    floor = request.args['Floor']
+    t = time.time()
+    try:
+        t = float(request.args['Time'])
+    except:
+        pass
+    numDevices = getDevicesInFloor(building,floor, t)
+    numUsers = getUsersInFloor(building,floor,t)
+    bjson={'numDevices':str(numDevices), 'numUsers':str(numUsers)}
+    bjson = json.dumps(bjson)
+    return bjson
+
+
 
 @app.route('/numDevicesBuildingTime', methods=['GET'])
 def numDevicesPerBuildingTime():
@@ -44,6 +76,42 @@ def numDevicesPerBuildingTime():
     bjson = {'numDevices':str(info)}
     bjson = json.dumps(bjson)
     return bjson
+
+@app.route('/numUsersAP', methods=['GET'])
+def numUsersperAPmac():
+    AP=request.args['AP']
+    ap_info=getDevicesByAp(AP, users = True)
+    ap_info_json={'numUsers':str(ap_info)}
+    ap_info_json=json.dumps(ap_info_json)
+    return ap_info_json
+
+@app.route('/numUsersAPTime', methods=['GET'])
+def numUsersperAPmacTime():
+    AP=request.args['AP']
+    time = float(request.args['Time'])
+    ap_info=getDevicesByAp(AP,time, True)
+    ap_info_json={'numUsers':str(ap_info)}
+    ap_info_json=json.dumps(ap_info_json)
+    return ap_info_json
+
+
+@app.route('/numUsersBuilding', methods=['GET'])
+def numUsersPerBuilding():
+    building = request.args['Building']
+    info = getUsersInBuilding(building)
+    bjson = {'numUsers':str(info)}
+    bjson = json.dumps(bjson)
+    return bjson
+
+@app.route('/numUsersBuildingTime', methods=['GET'])
+def numUsersPerBuildingTime():
+    building = request.args['Building']
+    time = float(request.args['Time'])
+    info = getUsersInBuilding(building, time)
+    bjson = {'numUsers':str(info)}
+    bjson = json.dumps(bjson)
+    return bjson
+
 
 @app.route('/numDevicesBlock', methods=['GET'])
 def numDevicesPerBlock():
@@ -63,6 +131,60 @@ def numDevicesPerBlockTime():
     bjson = {'numDevices':str(info)}
     bjson = json.dumps(bjson)
     return bjson
+
+
+@app.route('/numDevicesLast24AP', methods=['GET'])
+def numDevicesLast24Ap():
+    AP=request.args['AP']
+    time = time.time()
+    try:
+        time = float(request.args['Time'])
+    except:
+        pass
+    ap_info=last24HoursByAp(AP, time)
+    ap_info_json={'list':str(ap_info)}
+    ap_info_json=json.dumps(ap_info_json)
+    return ap_info_json
+
+@app.route('/numDevicesLast24Building', methods=['GET'])
+def numDevicesLast24Building():
+    build=request.args['Building']
+    t = time.time()
+    try:
+        t = float(request.args['Time'])
+    except:
+        pass
+    ap_info=last24HoursByBuilding(build, t)
+    ap_info_json={'list':ap_info}
+    ap_info_json=json.dumps(ap_info_json)
+    return ap_info_json
+
+@app.route('/numDevicesLast7Building', methods=['GET'])
+def numDevicesLast7Ap():
+    build=request.args['Building']
+    t = time.time()
+    try:
+        t = float(request.args['Time'])
+    except:
+        pass
+    ap_info=last7DaysByBuilding(build, t)
+    ap_info_json={'list':ap_info}
+    ap_info_json=json.dumps(ap_info_json)
+    return ap_info_json
+
+@app.route('/numDevicesLast7AP', methods=['GET'])
+def numDevicesLast7Building():
+    ap=request.args['AP']
+    time = time.time()
+    try:
+        time = float(request.args['Time'])
+    except:
+        pass
+    ap_info=last7DaysByAp(ap, time)
+    ap_info_json={'list':str(ap_info)}
+    ap_info_json=json.dumps(ap_info_json)
+    return ap_info_json
+
 
 
 @app.route('/APbyfloor', methods=['GET'])

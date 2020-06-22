@@ -11,7 +11,7 @@ resp = requests.get("http://127.0.0.1:5000/webacs/api/v1/data/AccessPoints")
 
 APdict = {}
 
-c.execute("select * from APbyBlock where Building = 'ed4' and Block = 'electronica'")
+c.execute("select * from APbyBlock where Building = 'ed4' or Building = 'ed11'")
 i = 0
 resp = resp.json()
 for ap in c.fetchall():
@@ -25,7 +25,7 @@ while(1):
 
     for line in resp.json():
         print (line)
-        c.execute("insert into APinfo values (%s,%s,%s)", (APdict[line['macAddress']], timestamp, line['clientCount']))
+        c.execute("insert into APinfo values (%s,%s,%s,%s)", (APdict[line['macAddress']], timestamp, line['clientCount'], line['numUsers']))
 
 
     
